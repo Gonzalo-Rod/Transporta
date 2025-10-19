@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import {
   View,
   Text,
@@ -10,41 +11,80 @@ import { FontAwesome } from "@expo/vector-icons";
 import auth from '../utils/Auth';
 import axios from "axios"; 
 
-export default function LoginScreen(props) {
+const extractSessionData = (rawData) => {
+  if (!rawData) {
+    return null;
+  }
+
+  if (rawData.token) {
+    return rawData;
+  }
+
+  if (rawData.body) {
+    try {
+      return JSON.parse(rawData.body);
+    } catch (parseError) {
+      console.log("Error parsing response body:", parseError);
+      return null;
+    }
+  }
+
+  return rawData;
+};
+
+const buildErrorMessage = (error) => {
+  const defaultMessage = "Error al iniciar sesión. Inténtalo de nuevo.";
+  const errorData = error?.response?.data;
+
+  if (!errorData) {
+    return defaultMessage;
+  }
+
+  if (errorData.message) {
+    return errorData.message;
+  }
+
+  if (errorData.body) {
+    try {
+      const parsed = JSON.parse(errorData.body);
+      return parsed.message || defaultMessage;
+    } catch (parseError) {
+      console.log("Error parsing error body:", parseError);
+    }
+  }
+
+  return defaultMessage;
+};
+
+export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
 
   const logIn = async () => {
     const url_register =
-      "https://z9i523elr0.execute-api.us-east-1.amazonaws.com/dev/login";
+      "https://swgopvgvf5.execute-api.us-east-1.amazonaws.com/dev/login-user";
     const headers = {
       "Content-Type": "application/json",
     };
 
     try {
-      const data = {
-        httpMethod: "POST",
-        path: "/login-user",
-        body: JSON.stringify({ correo: email, password: password }),
-      };
+      const payload = { correo: email, password };
 
-      const response = await axios.post(url_register, data, { headers });
-      const datita = JSON.parse(response.data.body);
+      const response = await axios.post(url_register, payload, { headers });
+      const sessionData = extractSessionData(response.data);
 
-      if (datita.token) {
-				console.log(datita);
-				console.log(datita.user);
-				console.log(datita.user.correo);
-				console.log(datita.user.correo,datita.token);
-				auth.setUserSession(datita.user.correo,datita.token);
-        props.navigation.navigate("Main");
+      if (sessionData?.token && sessionData?.user?.correo) {
+				console.log(sessionData);
+				auth.setUserSession(sessionData.user.correo, sessionData.token);
+        navigation.navigate("Main");
       } else {
-        setErrorMessage("Correo o contraseña incorrectos");
+        const message = sessionData?.message || "Correo o contraseña incorrectos";
+        setErrorMessage(message);
       }
     } catch (error) {
       console.log("Error:", error);
-      setErrorMessage("Error al iniciar sesión. Inténtalo de nuevo.");
+      setErrorMessage(buildErrorMessage(error));
     }
   };
 
@@ -92,7 +132,7 @@ export default function LoginScreen(props) {
         <Text style={styles.socialText}>Ingresa con Apple</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => props.navigation.navigate("Register")}>
+      <TouchableOpacity onPress={() => navigation.navigate("Register")}>
         <Text style={styles.registerText}>
           ¿No tienes cuenta? <Text style={{ color: "#6B9AC4" }}>Regístrate</Text>
         </Text>
@@ -196,3 +236,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 });
+
+LoginScreen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};

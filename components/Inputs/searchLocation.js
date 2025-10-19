@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import {
   View,
   TextInput,
@@ -52,6 +53,7 @@ const SearchLocation = ({ placeholder, onLocationSelect }) => {
       <View style={styles.inputRow}>
         <Ionicons name="search" size={18} color="#A5A5A5" />
         <TextInput
+          testID="search-input"
           placeholder={placeholder || 'Buscar ubicación'}
           style={styles.input}
           value={query}
@@ -67,6 +69,7 @@ const SearchLocation = ({ placeholder, onLocationSelect }) => {
             keyExtractor={(item) => item.place_id}
             renderItem={({ item }) => (
               <TouchableOpacity
+                testID={`suggestion-${item.place_id}`}
                 onPress={() => handleSelect(item)}
                 style={styles.suggestionItem}
               >
@@ -141,3 +144,12 @@ const styles = StyleSheet.create({
 });
 
 export default SearchLocation;
+
+SearchLocation.propTypes = {
+  placeholder: PropTypes.string,
+  onLocationSelect: PropTypes.func.isRequired,
+};
+
+SearchLocation.defaultProps = {
+  placeholder: 'Buscar ubicación',
+};

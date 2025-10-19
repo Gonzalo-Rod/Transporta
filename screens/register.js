@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import {
   View,
   Text,
@@ -7,8 +8,38 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
 import axios from "axios";
+
+const isValidEmail = (value) => {
+  if (typeof value !== "string") {
+    return false;
+  }
+
+  const email = value.trim();
+  if (!email) {
+    return false;
+  }
+
+  const atIndex = email.indexOf("@");
+  if (atIndex <= 0 || atIndex === email.length - 1) {
+    return false;
+  }
+
+  const localPart = email.slice(0, atIndex);
+  const domainPart = email.slice(atIndex + 1);
+
+  if (!localPart || !domainPart || domainPart.includes(" ")) {
+    return false;
+  }
+
+  const domainLabels = domainPart.split(".");
+  if (domainLabels.length < 2 || domainLabels.some((label) => label.length === 0)) {
+    return false;
+  }
+
+  const invalidCharacters = /[\s<>()[\]\\,;:"]/.test(email);
+  return !invalidCharacters;
+};
 
 const Register = ({ navigation }) => {
   const [nombre, setNombre] = useState("");
@@ -18,7 +49,7 @@ const Register = ({ navigation }) => {
   const [telefono, setTelefono] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const url_register = "https://z9i523elr0.execute-api.us-east-1.amazonaws.com/dev/register";
+  const url_register = "https://swgopvgvf5.execute-api.us-east-1.amazonaws.com/dev/register-user";
   const headers = { "Content-Type": "application/json" };
 
   const validateInputs = () => {
@@ -26,12 +57,12 @@ const Register = ({ navigation }) => {
       Alert.alert("Error", "Por favor, rellena todos los campos.");
       return false;
     }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(correo)) {
+    if (!isValidEmail(correo)) {
       Alert.alert("Error", "Por favor, ingresa un correo válido.");
       return false;
     }
-    if (telefono.length !== 9 || isNaN(telefono)) {
+    const phoneNumber = Number(telefono);
+    if (telefono.length !== 9 || Number.isNaN(phoneNumber)) {
       Alert.alert("Error", "El número de teléfono debe tener 9 dígitos.");
       return false;
     }
@@ -49,20 +80,9 @@ const Register = ({ navigation }) => {
       telefono,
     };
 
-    const json_data = {
-      httpMethod: "POST",
-      path: "/register-user",
-      body: JSON.stringify(info),
-    };
-
     try {
-      const response = await axios({
-        method: "POST",
-        url: url_register,
-        headers: headers,
-        data: json_data,
-      });
-      console.log("Registro exitoso:", response);
+      const response = await axios.post(url_register, info, { headers });
+      console.log("Registro exitoso:", response.data);
       Alert.alert("Registro exitoso", "Te has registrado con éxito.");
       navigation.navigate("Login");
     } catch (error) {
@@ -225,3 +245,9 @@ const styles = StyleSheet.create({
 });
 
 export default Register;
+
+Register.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};

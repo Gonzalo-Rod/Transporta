@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -39,7 +40,7 @@ const Chat = ({ navigation, route }) => {
         keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 0} // Adjust offset if needed
       >
         <View style={styles.headerContainer}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity testID="chat-back-button" onPress={() => navigation.goBack()}>
             <Ionicons name="arrow-back" size={24} color="#6B9AC4" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>{driverName}</Text>
@@ -59,7 +60,7 @@ const Chat = ({ navigation, route }) => {
             value={message}
             onChangeText={setMessage}
           />
-          <TouchableOpacity onPress={sendMessage}>
+          <TouchableOpacity accessibilityLabel="chat-send-button" onPress={sendMessage}>
             <Ionicons name="send" size={24} color="#6B9AC4" />
           </TouchableOpacity>
         </View>
@@ -127,3 +128,14 @@ const styles = StyleSheet.create({
 });
 
 export default Chat;
+
+Chat.propTypes = {
+  navigation: PropTypes.shape({
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      driverName: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+};

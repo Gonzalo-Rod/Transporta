@@ -1,9 +1,9 @@
 import React,{useState,useEffect} from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, Image, FlatList, SafeAreaView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import axios from "axios";
 import { getUser,getToken } from "../utils/Auth";
-import { useFocusEffect } from '@react-navigation/native';
 
 const url = "https://s1oxe0wq3c.execute-api.us-east-1.amazonaws.com/dev/get-mis-viajes";
 const vehicles = {
@@ -60,8 +60,8 @@ const Activity = ({ navigation }) => {
 			const method = "POST";
 
 			console.log("REAL");
-			response = await axios({
-				method:method,
+			const response = await axios({
+				method,
 				url:url,
 				headers:headers,
 				data:json_data
@@ -91,7 +91,7 @@ const Activity = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity testID="go-back-button" onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="#6B9AC4" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Tu Actividad</Text>
@@ -171,3 +171,9 @@ const styles = StyleSheet.create({
 });
 
 export default Activity;
+
+Activity.propTypes = {
+  navigation: PropTypes.shape({
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
+};

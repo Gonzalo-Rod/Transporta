@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList, Image, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import SearchLocation from '../components/Inputs/searchLocation';
 
 const Route = () => {
   const navigation = useNavigation();
-  const [inicio, setPartida] = useState('');    
-  const [llegada, setDestino] = useState('');    
+  const [inicio, setInicio] = useState('');
+  const [llegada, setLlegada] = useState('');
   const [focusedInput, setFocusedInput] = useState(null); 
 
   const routes = [
@@ -18,14 +18,18 @@ const Route = () => {
 
   const handleRoutePress = (address) => {
     if (focusedInput === 'partida') {
-      setPartida(address);    
+      setInicio(address);    
     } else if (focusedInput === 'destino') {
-      setDestino(address);    
+      setLlegada(address);    
     }
   };
 
   const renderRoute = ({ item }) => (
-    <TouchableOpacity onPress={() => handleRoutePress(item.address)} style={styles.routeContainer}>
+    <TouchableOpacity
+      testID={`recent-route-${item.id}`}
+      onPress={() => handleRoutePress(item.address)}
+      style={styles.routeContainer}
+    >
       <Image
         source={require('../assets/recent.png')}
         style={styles.icon}
@@ -41,26 +45,28 @@ const Route = () => {
     <SafeAreaView style={styles.safeContainer}>
       <View style={styles.container}>
 
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <TouchableOpacity testID="route-back" onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={26} color="#6B9AC4" />
         </TouchableOpacity>
 
         <Text style={styles.headerText}>Selecciona la Ruta</Text>
 
         <SearchLocation
-        placeholder="Buscar partida"
-        onLocationSelect={(location) => {
-          console.log('Ubicación seleccionada:', location);
-          setPartida(location);
-        }}
-      />
+          placeholder="Buscar partida"
+          onFocus={() => setFocusedInput('partida')}
+          onLocationSelect={(location) => {
+            console.log('Ubicación seleccionada:', location);
+            setInicio(location);
+          }}
+        />
         <SearchLocation
-        placeholder="Buscar destino"
-        onLocationSelect={(location) => {
-          console.log('Ubicación seleccionada:', location);
-          setDestino(location);
-        }}
-      />
+          placeholder="Buscar destino"
+          onFocus={() => setFocusedInput('destino')}
+          onLocationSelect={(location) => {
+            console.log('Ubicación seleccionada:', location);
+            setLlegada(location);
+          }}
+        />
 
         <FlatList
           data={routes}
@@ -69,7 +75,11 @@ const Route = () => {
           style={styles.routeList}
         />
 
-        <TouchableOpacity style={styles.continueButton} onPress={() => navigation.navigate('ChooseVehicle', { inicio, llegada })}>
+        <TouchableOpacity
+          testID="route-continue"
+          style={styles.continueButton}
+          onPress={() => navigation.navigate('ChooseVehicle', { inicio, llegada })}
+        >
           <Text style={styles.continueButtonText}>Continuar</Text>
         </TouchableOpacity>
       </View>

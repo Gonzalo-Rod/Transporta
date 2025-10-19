@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -14,7 +15,7 @@ const AddCreditCard = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity testID="back-button" onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="#6B9AC4" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Agregar método de pago</Text>
@@ -160,3 +161,10 @@ const styles = StyleSheet.create({
 });
 
 export default AddCreditCard;
+
+AddCreditCard.propTypes = {
+  navigation: PropTypes.shape({
+    goBack: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};

@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import { useRoute } from '@react-navigation/native';
 import moment from "moment";
 import "moment-timezone";
 import "moment/locale/es";
@@ -14,6 +13,7 @@ const driversData = [
 const DetailsCard = () => {
   const route = useRoute();
   const { inicio, llegada, fecha, hora } = route.params;
+  const navigation = useNavigation();
 
   const formattedDateTime = moment
     .tz(`${fecha} ${hora}`, "YYYY-MM-DD HH:mm:ss", "America/Lima") 
@@ -22,7 +22,7 @@ const DetailsCard = () => {
 
   const capitalizedDateTime =
     formattedDateTime.charAt(0).toUpperCase() +
-    formattedDateTime.slice(1).replace(/ ([a-z])/g, (match) => match.toUpperCase());
+    formattedDateTime.slice(1).replaceAll(/ ([a-z])/g, (match) => match.toUpperCase());
 
   const driver = driversData[0];
 
@@ -31,7 +31,11 @@ const DetailsCard = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity style={styles.driverCard} onPress={() => navigation.navigate('DriverProfile', { driver })}>
+      <TouchableOpacity
+        testID="details-driver-card"
+        style={styles.driverCard}
+        onPress={() => navigation.navigate('DriverProfile', { driver })}
+      >
         <Image source={driver.image} style={styles.driverImage} />
         <View style={styles.driverInfo}>
           <Text style={styles.driverName}>{driver.name}</Text>
@@ -72,7 +76,11 @@ const DetailsCard = () => {
         <Text style={styles.dateText}>{capitalizedDateTime}</Text>
       </View>
 
-      <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.navigate('Home')}>
+      <TouchableOpacity
+        testID="details-cancel"
+        style={styles.cancelButton}
+        onPress={() => navigation.navigate('Home')}
+      >
         <Text style={styles.cancelButtonText}>Cancelar</Text>
       </TouchableOpacity>
     </SafeAreaView>

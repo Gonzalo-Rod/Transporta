@@ -1,9 +1,10 @@
 import React,{useState,useEffect} from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 const { width } = Dimensions.get('window');
 import { getUser,getToken } from "../utils/Auth";
-const url = "https://z9i523elr0.execute-api.us-east-1.amazonaws.com/dev/get-user";
+const url = "https://swgopvgvf5.execute-api.us-east-1.amazonaws.com/dev/get-user";
 const headers = {
 	"Content-Type":"application/json"
 };
@@ -16,7 +17,6 @@ const UserProfile = ({ navigation }) => {
 	const [user,setUser] = useState("");
 	const [token,setToken] = useState("");
 	const [user_data,setUser_data] = useState("");
-	const [image,setImage] = useState({ uri: 'https://via.placeholder.com/100' });
 
 	const test = () => {
 		(async () => {
@@ -30,26 +30,25 @@ const UserProfile = ({ navigation }) => {
 	const getUsersito = async () => {
 		try {
 			const info = {
-				correo:user,
-				token:token
+				correo: user,
+				token: token
+			};
+			const response = await axios.post(url, info, { headers });
+			let payload = response.data;
+			if (payload?.body) {
+				try {
+					payload = JSON.parse(payload.body);
+				} catch (parseError) {
+					console.log('Error parsing user response body:', parseError);
+				}
 			}
-			const json_data = {
-				httpMethod:"GET",
-				path:"/get-user",
-				body:JSON.stringify(info)
+			const userData = payload?.response;
+			if (userData) {
+				setUser_data(userData);
+				console.log(userData);
 			}
-			const method = "POST";
-			response = await axios({
-				method:method,
-				url:url,
-				headers:headers,
-				data:json_data
-			})
-			const user_data = JSON.parse(response.data.body).response;
-			setUser_data(user_data);
-			console.log(user_data);
 
-		} catch (error){ console.log(error) }
+		} catch (error){ console.log(error); }
 	}
 	
 	
@@ -65,7 +64,7 @@ const UserProfile = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity testID="profile-back" onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="#6B9AC4" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Tu Perfil</Text>
@@ -76,15 +75,23 @@ const UserProfile = ({ navigation }) => {
           <Text style={styles.userName}>{user_data?.nombre?.S ||"Cargando..."} {user_data?.apellido?.S}</Text>
           <Text style={styles.userRole}>{"User"}</Text>
         </View>
-        <Image source={image} style={styles.userImage} />
+        <Image source={{ uri: 'https://via.placeholder.com/100' }} style={styles.userImage} />
       </View>
 
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Activity')}>
+        <TouchableOpacity
+          testID="profile-activity"
+          style={styles.button}
+          onPress={() => navigation.navigate('Activity')}
+        >
           <Ionicons name="notifications-outline" size={20} color="#6B9AC4" />
           <Text style={styles.buttonText}>Actividad</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('PaymentInfo',{user_data:user_data?.metodo_de_pago?.S})}>
+        <TouchableOpacity
+          testID="profile-payment"
+          style={styles.button}
+          onPress={() => navigation.navigate('PaymentInfo',{user_data:user_data?.metodo_de_pago?.S})}
+        >
           <Ionicons name="card-outline" size={20} color="#6B9AC4" />
           <Text style={styles.buttonText}>Pago</Text>
         </TouchableOpacity>
@@ -94,7 +101,7 @@ const UserProfile = ({ navigation }) => {
         <Text style={styles.infoTitle}>Datos personales</Text>
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Nombre</Text>
-          <Text style={styles.infoValue}>{user_data?.nombre?.S + " " + user_data?.apellido?.S || "Cargando..."}</Text>
+          <Text style={styles.infoValue}>{`${user_data?.nombre?.S ?? ""} ${user_data?.apellido?.S ?? ""}`.trim() || "Cargando..."}</Text>
         </View>
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Celular</Text>
@@ -106,7 +113,11 @@ const UserProfile = ({ navigation }) => {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.navigate('Login')}>
+      <TouchableOpacity
+        testID="profile-logout"
+        style={styles.logoutButton}
+        onPress={() => navigation.navigate('Login')}
+      >
         <Text style={styles.logoutText}>Cerrar sesión</Text>
       </TouchableOpacity>
     </SafeAreaView>
@@ -211,15 +222,25 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   logoutButton: {
-    marginTop: 90,
+    backgroundColor: '#D9534F',
     paddingVertical: 15,
+    borderRadius: 10,
     alignItems: 'center',
+    marginTop: 30,
+    marginHorizontal: 30,
   },
   logoutText: {
+    color: '#fff',
     fontSize: 16,
-    marginTop: 170,
-    color: '#6B9AC4',
+    fontWeight: 'bold',
   },
 });
 
 export default UserProfile;
+
+UserProfile.propTypes = {
+  navigation: PropTypes.shape({
+    goBack: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};

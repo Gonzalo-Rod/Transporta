@@ -10,7 +10,7 @@ const Card = () => {
       <Text style={styles.title}>Hola Usuario!</Text>
       <Text style={styles.subtitle}>Qué quieres hacer?</Text>
 
-      <TouchableOpacity style={styles.cardButton} onPress={() => navigation.navigate('Route')}>
+      <TouchableOpacity testID="card-route" style={styles.cardButton} onPress={() => navigation.navigate('Route')}>
         <Image source={require('../../assets/Busca.png')} style={styles.icon} />
         <View style={styles.textContainer}>
           <Text style={styles.buttonTitle}>Búsqueda Inmediata</Text>
@@ -18,7 +18,7 @@ const Card = () => {
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.cardButton} onPress={() => navigation.navigate('Reservations')} >
+      <TouchableOpacity testID="card-reservations" style={styles.cardButton} onPress={() => navigation.navigate('Reservations')} >
         <Image source={require('../../assets/Reserva.png')} style={styles.icon} />
         <View style={styles.textContainer}>
           <Text style={styles.buttonTitle}>Reserva</Text>
@@ -26,7 +26,7 @@ const Card = () => {
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.cardButton} onPress={() => navigation.navigate('Contact')}>
+      <TouchableOpacity testID="card-contact" style={styles.cardButton} onPress={() => navigation.navigate('Contact')}>
         <Image source={require('../../assets/Contacta.png')} style={styles.icon} />
         <View style={styles.textContainer}>
           <Text style={styles.buttonTitle}>Contacta</Text>

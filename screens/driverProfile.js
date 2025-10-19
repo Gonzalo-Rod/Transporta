@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -16,7 +17,7 @@ const DriverProfile = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity testID="driver-profile-back" onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="#6B9AC4" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Conductor</Text>
@@ -34,11 +35,19 @@ const DriverProfile = ({ navigation, route }) => {
       </View>
 
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Chat', { driverName })}>
+        <TouchableOpacity
+          testID="driver-profile-contact"
+          style={styles.button}
+          onPress={() => navigation.navigate('Chat', { driverName: driver.name })}
+        >
           <Ionicons name="chatbox" size={20} color="#6B9AC4" />
           <Text style={styles.buttonText}>Contacto</Text>
         </TouchableOpacity> 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('AdvReservation', { driverData })}>
+        <TouchableOpacity
+          testID="driver-profile-reserve"
+          style={styles.button}
+          onPress={() => navigation.navigate('AdvReservation', { driverData: driverData ?? driver })}
+        >
           <Ionicons name="calendar" size={20} color="#6B9AC4" />
           <Text style={styles.buttonText}>Reservar</Text>
         </TouchableOpacity>
@@ -175,3 +184,28 @@ const styles = StyleSheet.create({
 });
 
 export default DriverProfile;
+
+DriverProfile.propTypes = {
+  navigation: PropTypes.shape({
+    goBack: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      driver: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        lastname: PropTypes.string,
+        rating: PropTypes.number.isRequired,
+        image: PropTypes.oneOfType([PropTypes.number, PropTypes.object]).isRequired,
+        plate: PropTypes.string.isRequired,
+        vehicle: PropTypes.string.isRequired,
+        ancho: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        largo: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        altura: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        availability: PropTypes.string.isRequired,
+        mail: PropTypes.string,
+        phone: PropTypes.string,
+      }).isRequired,
+    }).isRequired,
+  }).isRequired,
+};

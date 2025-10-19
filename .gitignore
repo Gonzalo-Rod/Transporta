@@ -24,6 +24,10 @@ npm-debug.*
 yarn-debug.*
 yarn-error.*
 
+# reports & scanners
+coverage/
+.scannerwork/
+
 # macOS
 .DS_Store
 *.pem
@@ -33,3 +37,6 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# editors
+.vscode/

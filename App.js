@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -27,39 +27,36 @@ import MapDetails from './components/HomeMap/MapDetails';
 import RsvVehicleList from './components/ChooseVehicle/RsvVehicleCard';
 import RsvChooseVehicle from './screens/RsvchooseVehicle';
 
+const Stack = createNativeStackNavigator();
+
+const MyStack = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="Login" component={Login} />
+    <Stack.Screen name="Register" component={Register} />
+    <Stack.Screen name="Main" component={BottomTab} />
+    <Stack.Screen name="Route" component={Route} />
+    <Stack.Screen name="Drivers" component={DriversList} />
+    <Stack.Screen name="DriverProfile" component={DriverProfile} />
+    <Stack.Screen name="AdvReservation" component={AdvReservation} />
+    <Stack.Screen name="AdvConfirmation" component={AdvConfirmation} />
+    <Stack.Screen name="UserProfile" component={UserProfile} />
+    <Stack.Screen name="PaymentInfo" component={PaymentInfo} />
+    <Stack.Screen name="AddCreditCard" component={AddCreditCard} />
+    <Stack.Screen name="Activity" component={Activity} />
+    <Stack.Screen name="Chat" component={Chat} />
+    <Stack.Screen name="Reservations" component={Reservations} />
+    <Stack.Screen name="ReservationRoute" component={ReservationRoute} />
+    <Stack.Screen name="ChooseVehicle" component={ChooseVehicle} />
+    <Stack.Screen name="ServiceDetails" component={ServiceDetails} />
+    <Stack.Screen name="DetailsCard" component={DetailsCard} />
+    <Stack.Screen name="SearchLocation" component={SearchLocation} />
+    <Stack.Screen name="MapDetails" component={MapDetails} />
+    <Stack.Screen name="RsvVehicleList" component={RsvVehicleList} />
+    <Stack.Screen name="RsvChooseVehicle" component={RsvChooseVehicle} />
+  </Stack.Navigator>
+);
+
 export default function App() {
-
-  const Stack = createNativeStackNavigator();
-
-  function MyStack() {
-    return (
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Register" component={Register} />
-      <Stack.Screen name="Main" component={BottomTab} />
-      <Stack.Screen name="Route" component={Route} />
-      <Stack.Screen name="Drivers" component={DriversList} />
-      <Stack.Screen name="DriverProfile" component={DriverProfile} />
-      <Stack.Screen name="AdvReservation" component={AdvReservation} />
-      <Stack.Screen name="AdvConfirmation" component={AdvConfirmation} />
-      <Stack.Screen name="UserProfile" component={UserProfile} />
-      <Stack.Screen name="PaymentInfo" component={PaymentInfo} />
-      <Stack.Screen name="AddCreditCard" component={AddCreditCard} />
-      <Stack.Screen name="Activity" component={Activity} />
-      <Stack.Screen name="Chat" component={Chat} />
-      <Stack.Screen name="Reservations" component={Reservations} />
-      <Stack.Screen name="ReservationRoute" component={ReservationRoute} />
-      <Stack.Screen name="ChooseVehicle" component={ChooseVehicle} />
-      <Stack.Screen name="ServiceDetails" component={ServiceDetails} />
-      <Stack.Screen name="DetailsCard" component={DetailsCard} />
-      <Stack.Screen name="SearchLocation" component={SearchLocation} />
-      <Stack.Screen name="MapDetails" component={MapDetails} />
-      <Stack.Screen name="RsvVehicleList" component={RsvVehicleList} />
-      <Stack.Screen name="RsvChooseVehicle" component={RsvChooseVehicle} />
-      </Stack.Navigator>
-    )
-  }
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer>

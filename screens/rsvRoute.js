@@ -6,9 +6,9 @@ import SearchLocation from '../components/Inputs/searchLocation';
 
 const ReservationRoute = () => {
   const navigation = useNavigation();
-  const [inicio, setPartida] = useState('');
-  const [llegada, setDestino] = useState('');
-  const [fecha, setDia] = useState('');
+  const [inicio, setInicio] = useState('');
+  const [llegada, setLlegada] = useState('');
+  const [fecha, setFecha] = useState('');
   const [hora, setHora] = useState('');
   const [focusedInput, setFocusedInput] = useState(null);
 
@@ -20,14 +20,18 @@ const ReservationRoute = () => {
 
   const handleRoutePress = (address) => {
     if (focusedInput === 'partida') {
-      setPartida(address);
+      setInicio(address);
     } else if (focusedInput === 'destino') {
-      setDestino(address);
+      setLlegada(address);
     }
   };
 
   const renderRoute = ({ item }) => (
-    <TouchableOpacity onPress={() => handleRoutePress(item.address)} style={styles.routeContainer}>
+    <TouchableOpacity
+      testID={`recent-route-${item.id}`}
+      onPress={() => handleRoutePress(item.address)}
+      style={styles.routeContainer}
+    >
       <Image
         source={require('../assets/recent.png')}
         style={styles.icon}
@@ -43,7 +47,7 @@ const ReservationRoute = () => {
     <SafeAreaView style={styles.safeContainer}>
       <View style={styles.container}>
 
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <TouchableOpacity testID="reservation-route-back" onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={26} color="#6B9AC4" />
         </TouchableOpacity>
 
@@ -53,25 +57,26 @@ const ReservationRoute = () => {
         placeholder="Buscar partida"
         onLocationSelect={(location) => {
           console.log('Ubicación seleccionada:', location);
-          setPartida(location);
+          setInicio(location);
         }}
       />
         <SearchLocation
         placeholder="Buscar destino"
         onLocationSelect={(location) => {
           console.log('Ubicación seleccionada:', location);
-          setDestino(location);
-        }}
-      />
+          setLlegada(location);
+          }}
+        />
 
         <View style={styles.dateTimeContainer}>
           <View style={[styles.inputRow, styles.smallInput]}>
             <Ionicons name="calendar" size={18} color="#A5A5A5" />
             <TextInput
               placeholder="Día"
+              testID="date-input"
               style={styles.input}
               value={fecha}
-              onChangeText={setDia}
+              onChangeText={setFecha}
               onFocus={() => setFocusedInput('dia')}
             />
           </View>
@@ -79,6 +84,7 @@ const ReservationRoute = () => {
             <Ionicons name="alarm" size={18} color="#A5A5A5" />
             <TextInput
               placeholder="Hora"
+              testID="time-input"
               style={styles.input}
               value={hora}
               onChangeText={setHora}
@@ -94,7 +100,11 @@ const ReservationRoute = () => {
           style={styles.routeList}
         />
 
-        <TouchableOpacity style={styles.continueButton} onPress={() => navigation.navigate('RsvChooseVehicle', {inicio, llegada, fecha, hora}) }>
+        <TouchableOpacity
+          testID="reservation-route-continue"
+          style={styles.continueButton}
+          onPress={() => navigation.navigate('RsvChooseVehicle', {inicio, llegada, fecha, hora}) }
+        >
           <Text style={styles.continueButtonText}>Continuar</Text>
         </TouchableOpacity>
       </View>

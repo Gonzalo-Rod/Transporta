@@ -11,7 +11,7 @@ const MapDetails = () => {
 
   const [originCoords, setOriginCoords] = useState(null);
   const [destinationCoords, setDestinationCoords] = useState(null);
-  const [Maproute, setRoute] = useState(null);
+  const [routeCoordinates, setRouteCoordinates] = useState(null);
   const [loading, setLoading] = useState(false);
   const mapRef = useRef(null); // Referencia al mapa
 
@@ -45,7 +45,7 @@ const MapDetails = () => {
 
       if (data.status === 'OK' && data.routes.length > 0) {
         const points = decodePolyline(data.routes[0].overview_polyline.points);
-        setRoute(points);
+        setRouteCoordinates(points);
 
         // Ajusta la cámara para que enfoque la ruta
         if (mapRef.current) {
@@ -69,30 +69,34 @@ const MapDetails = () => {
   // Decodificador de polyline
   const decodePolyline = (t) => {
     let points = [];
-    let index = 0,
-      len = t.length;
-    let lat = 0,
-      lng = 0;
+    let index = 0;
+    const len = t.length;
+    let lat = 0;
+    let lng = 0;
 
     while (index < len) {
-      let b,
-        shift = 0,
-        result = 0;
+      let shift = 0;
+      let result = 0;
+      let codePoint;
       do {
-        b = t.charCodeAt(index++) - 63;
-        result |= (b & 0x1f) << shift;
+        const rawCodePoint = t.codePointAt(index) ?? 0;
+        index += rawCodePoint > 0xffff ? 2 : 1;
+        codePoint = rawCodePoint - 63;
+        result |= (codePoint & 0x1f) << shift;
         shift += 5;
-      } while (b >= 0x20);
+      } while (codePoint >= 0x20);
       const dlat = result & 1 ? ~(result >> 1) : result >> 1;
       lat += dlat;
 
       shift = 0;
       result = 0;
       do {
-        b = t.charCodeAt(index++) - 63;
-        result |= (b & 0x1f) << shift;
+        const rawCodePoint = t.codePointAt(index) ?? 0;
+        index += rawCodePoint > 0xffff ? 2 : 1;
+        codePoint = rawCodePoint - 63;
+        result |= (codePoint & 0x1f) << shift;
         shift += 5;
-      } while (b >= 0x20);
+      } while (codePoint >= 0x20);
       const dlng = result & 1 ? ~(result >> 1) : result >> 1;
       lng += dlng;
 
@@ -130,6 +134,7 @@ const MapDetails = () => {
       {loading && <ActivityIndicator size="large" color="#0000ff" />}
       <MapView
         ref={mapRef} // Asigna la referencia al mapa
+        testID="map-details"
         style={styles.map}
         initialRegion={{
           latitude: originCoords?.latitude || -12.05677,
@@ -140,14 +145,29 @@ const MapDetails = () => {
       >
         {/* Marcador de inicio */}
         {originCoords && (
-          <Marker coordinate={originCoords} title="Origen" />
+          <Marker
+            testID="origin-marker"
+            coordinate={originCoords}
+            title="Origen"
+          />
         )}
         {/* Marcador de destino */}
         {destinationCoords && (
-          <Marker coordinate={destinationCoords} title="Destino" />
+          <Marker
+            testID="destination-marker"
+            coordinate={destinationCoords}
+            title="Destino"
+          />
         )}
         {/* Renderización de la ruta */}
-        {Maproute && <Polyline coordinates={Maproute} strokeWidth={4} strokeColor="#007AFF" />}
+        {routeCoordinates && (
+          <Polyline
+            testID="route-polyline"
+            coordinates={routeCoordinates}
+            strokeWidth={4}
+            strokeColor="#007AFF"
+          />
+        )}
       </MapView>
     </View>
   );

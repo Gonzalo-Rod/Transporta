@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native';
 import axios from "axios";
 
-const url = "https://h8019u59m4.execute-api.us-east-1.amazonaws.com/dev/get-vehiculos";
+const url = "https://swgopvgvf5.execute-api.us-east-1.amazonaws.com/dev/get-vehiculos";
 const headers = {
   "Content-Type": "application/json"
 };
@@ -17,46 +16,49 @@ const exampleDrivers = [
 ];
 
 const ContactScreen = ({ navigation }) => {
-  const [selectedFilter, setSelectedFilter] = useState({ vehicle: null, cargoType: null, enterprise: null });
-  const [vehiculos, setVehiculos] = useState([]);
-
-  const get_vehiculos = async (parametro, valor) => {
+  const get_vehiculos = async (parametro, valor, { shouldNavigate = true } = {}) => {
     try {
-      const info = {
-        parametro: parametro,
-        valor: valor.toLowerCase(),
-      };
-      const json_data = {
-        httpMethod: "GET",
-        path: "/get-vehiculos",
-        body: JSON.stringify(info)
-      };
-      const method = "POST";
-      const response = await axios({
-        method,
-        url,
-        headers,
-        data: json_data
-      });
+      const hasFilter = Boolean(parametro && valor);
+      const info = hasFilter ? { parametro, valor } : {};
+      console.log('get_vehiculos request payload:', info);
+      const requestUrl = hasFilter
+        ? `${url}?parametro=${encodeURIComponent(parametro)}&valor=${encodeURIComponent(valor)}`
+        : url;
+      console.log('get_vehiculos request url:', requestUrl);
+      const response = await axios.get(requestUrl, { headers });
       console.log(response);
-      const responseData = JSON.parse(response.data.body).response;
-      setVehiculos(responseData);
-      // Navigate to Drivers screen with vehiculos data
-      navigation.navigate('Drivers', { vehiculos: responseData });
+      const payload = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
+      let responseData = payload.response;
+      if (!responseData && payload.body) {
+        const bodyObj = typeof payload.body === 'string' ? JSON.parse(payload.body) : payload.body;
+        responseData = bodyObj.response;
+      }
+      if (!responseData) {
+        responseData = [];
+      }
+      if (shouldNavigate) {
+        navigation.navigate('Drivers', { vehiculos: responseData });
+      }
     } catch (error) {
-      console.log(error);
+      console.log('get_vehiculos error status:', error.response?.status);
+      console.log('get_vehiculos error data:', error.response?.data);
+      console.log('get_vehiculos error headers:', error.response?.headers);
+      console.log('get_vehiculos full error:', error);
     }
   };
 
   const applyFilter = (type, value) => {
-    const lowercaseValue = value.toLowerCase();
-    setSelectedFilter(prev => ({ ...prev, [type]: lowercaseValue}));
+    const normalizedValue = value.toLowerCase();
 
     let parametro;
     if (type === 'vehicle') parametro = 'tipo_transporte';
     else if (type === 'cargoType') parametro = 'tipo_carga';
     else if (type === 'enterprise') parametro = 'empresa';
-    get_vehiculos(parametro, value);
+    get_vehiculos(parametro, normalizedValue);
+  };
+
+  const showAllDrivers = () => {
+    get_vehiculos(undefined, undefined);
   };
 
   return (
@@ -65,7 +67,7 @@ const ContactScreen = ({ navigation }) => {
         {/* Vehiculos Section */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Vehiculos</Text>
-          <TouchableOpacity onPress={() => console.log('Vehiculos button pressed')}>
+          <TouchableOpacity testID="vehicles-forward" onPress={() => console.log('Vehiculos button pressed')}>
             <Ionicons name="chevron-forward-outline" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -92,7 +94,7 @@ const ContactScreen = ({ navigation }) => {
         {/* Carga Section */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Carga</Text>
-          <TouchableOpacity onPress={() => console.log('Carga button pressed')}>
+          <TouchableOpacity testID="cargo-forward" onPress={() => console.log('Carga button pressed')}>
             <Ionicons name="chevron-forward-outline" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -119,7 +121,7 @@ const ContactScreen = ({ navigation }) => {
         {/* Empresas Section */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Empresas</Text>
-          <TouchableOpacity onPress={() => console.log('Empresas button pressed')}>
+          <TouchableOpacity testID="enterprise-forward" onPress={() => console.log('Empresas button pressed')}>
             <Ionicons name="chevron-forward-outline" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -134,7 +136,7 @@ const ContactScreen = ({ navigation }) => {
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => applyFilter('enterprise', item.name)}>
               <View style={styles.carouselItem}>
-                <Text style={styles.companyLetter}>{item.name.charAt(item.name.length - 1)}</Text>
+                <Text style={styles.companyLetter}>{item.name.at(-1)}</Text>
                 <Text style={styles.carouselText}>{item.name}</Text>
               </View>
             </TouchableOpacity>
@@ -146,7 +148,7 @@ const ContactScreen = ({ navigation }) => {
         {/* Drivers Carousel */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Conductores</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Drivers')}>
+          <TouchableOpacity testID="drivers-forward" onPress={showAllDrivers}>
             <Ionicons name="chevron-forward-outline" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -187,3 +189,9 @@ const styles = StyleSheet.create({
 });
 
 export default ContactScreen;
+
+ContactScreen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};

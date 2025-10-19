@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -11,7 +12,7 @@ const AdvConfirmation = ({ navigation, route }) => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity testID="adv-back-button" onPress={() => navigation.goBack()}>
             <Ionicons name="arrow-back" size={24} color="#6B9AC4" />
           </TouchableOpacity>
         </View>
@@ -133,3 +134,18 @@ const styles = StyleSheet.create({
 });
 
 export default AdvConfirmation;
+
+AdvConfirmation.propTypes = {
+  navigation: PropTypes.shape({
+    goBack: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      originAddress: PropTypes.string.isRequired,
+      destinationAddress: PropTypes.string.isRequired,
+      date: PropTypes.string.isRequired,
+      time: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+};

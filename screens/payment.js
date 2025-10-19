@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Dimensions, FlatList, ScrollView } from 'react-native';
+import PropTypes from 'prop-types';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Dimensions, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
@@ -20,6 +21,8 @@ const PaymentInfo = ({ navigation }) => {
 
   const renderPaymentMethod = ({ item }) => (
     <TouchableOpacity
+      testID={`payment-method-${item.id}`}
+      accessibilityState={{ selected: selectedMethod === item.id }}
       style={[
         styles.paymentMethodContainer,
         selectedMethod === item.id && styles.selectedPaymentMethod,
@@ -50,7 +53,7 @@ const PaymentInfo = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity testID="payment-back" onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="#6B9AC4" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Pago</Text>
@@ -61,7 +64,11 @@ const PaymentInfo = ({ navigation }) => {
           <View key={method.id}>{renderPaymentMethod({ item: method })}</View>
         ))}
 
-        <TouchableOpacity style={[styles.paymentMethodContainer, styles.addPaymentButton]} onPress={() => navigation.navigate('AddCreditCard')}>
+        <TouchableOpacity
+          testID="payment-add-method"
+          style={[styles.paymentMethodContainer, styles.addPaymentButton]}
+          onPress={() => navigation.navigate('AddCreditCard')}
+        >
           <Ionicons name="add" size={28} color="#6B9AC4" style={styles.add}/>
           <Text style={styles.addPaymentText}>Agregar Metodo de Pago</Text>
         </TouchableOpacity>
@@ -102,7 +109,7 @@ const styles = StyleSheet.create({
     borderColor: '#E5E5E5',
     marginBottom: 10,
     shadowColor: '#000',
-    shadowOpacity: 0.10,
+    shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 5,
     minHeight: 70,
@@ -153,3 +160,10 @@ const styles = StyleSheet.create({
 });
 
 export default PaymentInfo;
+
+PaymentInfo.propTypes = {
+  navigation: PropTypes.shape({
+    goBack: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};

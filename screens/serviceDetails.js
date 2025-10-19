@@ -15,6 +15,7 @@ const ServiceDetails = () => {
         <View style={tw`flex-1`}>
             {/* Back Arrow */}
             <TouchableOpacity
+                testID="service-details-back"
                 style={[tw`absolute left-5 z-10`, {top: 67, padding: 8 }]}
                 onPress={() => navigation.goBack()}
             >

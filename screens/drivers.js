@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, FlatList, Image, TextInput, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -6,34 +7,38 @@ const { width } = Dimensions.get('window');
 const defaultRating = 5;
 
 const DriversList = ({ navigation, route }) => {
-  const { vehiculos } = route.params;
-  console.log(vehiculos)
+  const vehiculos = route?.params?.vehiculos ?? [];
+  console.log(vehiculos);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredDrivers, setFilteredDrivers] = useState([]);
 
-  useEffect(() => {
-    const drivers = vehiculos ? vehiculos.map((driver) => ({
-      id: driver.placa.S,
-      name: driver.nombre_conductor.S,
-      mail: driver.correo_conductor.S,
-      lastname: driver.apellido_conductor.S,
-      phone: driver.telefono.S,
-      vehicle: driver.tipo_transporte.S,
-      plate: driver.placa.S,
-      ancho: driver.dimensiones.M.ancho.S,
-      largo: driver.dimensiones.M.largo.S,
-      altura: driver.dimensiones.M.altura.S,
-      rating: defaultRating,
-      image: require('../assets/ConductorTemp.png'),
-    })) : driversData;
+  const mapDrivers = (driversSource) =>
+    Array.isArray(driversSource)
+      ? driversSource.map((driver, index) => ({
+          id: driver?.placa?.S ?? `driver-${index}`,
+          name: driver?.nombre_conductor?.S ?? 'Nombre no disponible',
+          mail: driver?.correo_conductor?.S ?? 'Correo no disponible',
+          lastname: driver?.apellido_conductor?.S ?? '',
+          phone: driver?.telefono?.S ?? 'Teléfono no disponible',
+          vehicle: driver?.tipo_transporte?.S ?? 'Vehículo no disponible',
+          plate: driver?.placa?.S ?? '',
+          ancho: driver?.dimensiones?.M?.ancho?.S ?? 'N/A',
+          largo: driver?.dimensiones?.M?.largo?.S ?? 'N/A',
+          altura: driver?.dimensiones?.M?.altura?.S ?? 'N/A',
+          rating: defaultRating,
+          image: require('../assets/ConductorTemp.png'),
+        }))
+      : [];
 
-    setFilteredDrivers(drivers);
+  useEffect(() => {
+    setFilteredDrivers(mapDrivers(vehiculos));
   }, [vehiculos]);
 
   const handleSearch = (text) => {
     setSearchQuery(text);
-    const filtered = filteredDrivers.filter(driver =>
+    const drivers = mapDrivers(vehiculos);
+    const filtered = drivers.filter(driver =>
       driver.name.toLowerCase().includes(text.toLowerCase())
     );
     setFilteredDrivers(filtered);
@@ -44,7 +49,10 @@ const DriversList = ({ navigation, route }) => {
   };
 
   const renderDriverItem = ({ item }) => (
-    <TouchableOpacity onPress={() => navigateToProfile(item)}>
+    <TouchableOpacity
+      testID={`driver-card-${item.id}`}
+      onPress={() => navigateToProfile(item)}
+    >
       <View style={styles.driverCard}>
         <Image source={item.image} style={styles.driverImage} />
         <View style={styles.driverInfo}>
@@ -63,7 +71,7 @@ const DriversList = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity testID="drivers-back" onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="#6B9AC4" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Conductores</Text>
@@ -176,3 +184,15 @@ const styles = StyleSheet.create({
 });
 
 export default DriversList;
+
+DriversList.propTypes = {
+  navigation: PropTypes.shape({
+    goBack: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      vehiculos: PropTypes.array,
+    }),
+  }).isRequired,
+};

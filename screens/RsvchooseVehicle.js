@@ -14,10 +14,7 @@ const RsvChooseVehicle = () => {
     return (
         <View style={tw`flex-1`}>
             {/* Back Arrow */}
-            <TouchableOpacity
-                style={[tw`absolute left-5 z-10`, {top: 67, padding: 8 }]}
-                onPress={() => navigation.goBack()}
-            >
+            <TouchableOpacity testID="rsv-choose-back" style={[tw`absolute left-5 z-10`, {top: 67, padding: 8 }]} onPress={() => navigation.goBack()}>
                 <Ionicons name="arrow-back" size={28} color="#6B9AC4" />
             </TouchableOpacity>
 
