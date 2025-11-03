@@ -1,0 +1,63 @@
+stages:
+  - frontend_build
+  - quality
+  - backend_test
+
+variables:
+  GIT_DEPTH: "0"
+
+frontend_tests:
+  image: node:18
+  stage: frontend_build
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+  script:
+    - npm ci --prefer-offline
+    - npm run test -- --coverage
+  artifacts:
+    when: always
+    paths:
+      - coverage/lcov.info
+    expire_in: 1 day
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+sonarqube_scan:
+  image:
+    name: sonarsource/sonar-scanner-cli:latest
+    entrypoint: [""]
+  stage: quality
+  needs:
+    - frontend_tests
+  variables:
+    SONAR_HOST_URL: ${https://srvapp.netwaresoft.com/}
+    SONAR_LOGIN: ${sqp_a8819843edb593af89ee84bb8980e196d0e66a13}
+  script:
+    - sonar-scanner
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+jmeter_backend_tests:
+  image: justb4/jmeter:5.6
+  stage: backend_test
+  variables:
+    JMETER_TEST_PLAN: jmeter/apitest.jmx
+  script:
+    - >
+      jmeter -n
+      -t "${JMETER_TEST_PLAN}"
+      -l results/jmeter-results.jtl
+      -e -o results/report
+  artifacts:
+    when: always
+    paths:
+      - results/jmeter-results.jtl
+      - results/report
+    expire_in: 1 week
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
