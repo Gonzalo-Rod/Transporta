@@ -1,5 +1,6 @@
 stages:
   - frontend_build
+  - backend_build
   - quality
   - backend_test
 
@@ -25,6 +26,48 @@ frontend_tests:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
+backend_tests:
+  image:
+    name: node:18
+    entrypoint: [""]
+  stage: backend_build
+  variables:
+    SERVICES: "get_user login register reservas vehiculos"
+  script:
+    - |
+      set -e
+      for service in $SERVICES; do
+        echo "Installing and testing backend service: ${service}"
+        (cd backend/"${service}" && npm ci --prefer-offline && npm run test -- --coverage)
+      done
+    - mkdir -p backend/coverage
+    - rm -f backend/coverage/lcov-all.info
+    - |
+      missing=0
+      for service in $SERVICES; do
+        coverage_file="backend/${service}/coverage/lcov.info"
+        if [ -f "$coverage_file" ]; then
+          cat "$coverage_file" >> backend/coverage/lcov-all.info
+          printf "\n" >> backend/coverage/lcov-all.info
+        else
+          echo "Coverage file missing for ${service}: ${coverage_file}" >&2
+          missing=1
+        fi
+      done
+      if [ "$missing" -ne 0 ]; then
+        echo "One or more backend coverage reports are missing." >&2
+        exit 1
+      fi
+  artifacts:
+    when: always
+    paths:
+      - backend/coverage/lcov-all.info
+      - backend/**/coverage/
+    expire_in: 1 week
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
 sonarqube_scan:
   image:
     name: sonarsource/sonar-scanner-cli:latest
@@ -32,26 +75,66 @@ sonarqube_scan:
   stage: quality
   needs:
     - frontend_tests
-  variables:
-    SONAR_HOST_URL: ${https://srvapp.netwaresoft.com/}
-    SONAR_LOGIN: ${sqp_a8819843edb593af89ee84bb8980e196d0e66a13}
   script:
-    - sonar-scanner
+    - |
+      frontend_host="${SONAR_FRONTEND_HOST_URL:-$SONAR_HOST_URL}"
+      if [ -z "${frontend_host}" ]; then
+        echo "SONAR_FRONTEND_HOST_URL or SONAR_HOST_URL must be set for the frontend scan." >&2
+        exit 1
+      fi
+      if [ -z "${SONAR_FRONTEND_TOKEN}" ] && [ -z "${SONAR_TOKEN}" ] && [ -z "${SONAR_LOGIN}" ]; then
+        echo "Please define SONAR_FRONTEND_TOKEN (preferred) or SONAR_TOKEN / SONAR_LOGIN for the frontend scan." >&2
+        exit 1
+      fi
+      sonar_login_value="${SONAR_FRONTEND_TOKEN:-${SONAR_TOKEN:-$SONAR_LOGIN}}"
+      sonar-scanner \
+        -Dsonar.host.url="${frontend_host}" \
+        -Dsonar.login="${sonar_login_value}"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+sonarqube_backend_scan:
+  image:
+    name: sonarsource/sonar-scanner-cli:latest
+    entrypoint: [""]
+  stage: quality
+  needs:
+    - backend_tests
+  script:
+    - |
+      backend_host="${SONAR_BACKEND_HOST_URL:-$SONAR_HOST_URL}"
+      if [ -z "${backend_host}" ]; then
+        echo "SONAR_BACKEND_HOST_URL or SONAR_HOST_URL must be set for the backend scan." >&2
+        exit 1
+      fi
+      if [ -z "${SONAR_BACKEND_TOKEN}" ] && [ -z "${SONAR_TOKEN}" ] && [ -z "${SONAR_LOGIN}" ]; then
+        echo "Please define SONAR_BACKEND_TOKEN (preferred) or SONAR_TOKEN / SONAR_LOGIN for the backend scan." >&2
+        exit 1
+      fi
+      sonar_login_value="${SONAR_BACKEND_TOKEN:-${SONAR_TOKEN:-$SONAR_LOGIN}}"
+      sonar-scanner \
+        -Dsonar.host.url="${backend_host}" \
+        -Dsonar.login="${sonar_login_value}" \
+        -Dproject.settings=backend/sonar-project.properties
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 jmeter_backend_tests:
-  image: justb4/jmeter:5.6
+  image:
+    name: justb4/jmeter:latest
+    entrypoint: [""]
   stage: backend_test
   variables:
     JMETER_TEST_PLAN: jmeter/apitest.jmx
   script:
-    - >
-      jmeter -n
-      -t "${JMETER_TEST_PLAN}"
-      -l results/jmeter-results.jtl
-      -e -o results/report
+    - mkdir -p results/report
+    - |
+      jmeter -n \
+        -t "${JMETER_TEST_PLAN}" \
+        -l results/jmeter-results.jtl \
+        -e -o results/report
   artifacts:
     when: always
     paths:

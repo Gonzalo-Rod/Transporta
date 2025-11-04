@@ -1,0 +1,6 @@
+-haria falta un sistema de notificaciones en la que el conductor indique que ya llego a la posicion
+-el conductor debe solictarle al usuario un codigo generado y solo visible por el usuario hasta que el
+conductor lo solicite para inciar el viaje
+-cuando el viaje finaliza el conductor y el usuario deberan indicar dentro de la aplicacion que el viaje a sido finalizado
+-el usuario debera indicar la calidad del servicio mediante estrellas
+-internamente el estado de la reserva cambia a finalizada

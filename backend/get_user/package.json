@@ -1,0 +1,15 @@
+{
+	"name": "get-user",
+	"version": "1.0.0",
+	"scripts": {
+		"test": "jest",
+		"test:coverage": "npm test -- --coverage"
+	},
+	"dependencies": {
+		"@aws-sdk/client-dynamodb": "^3.470.0",
+		"jsonwebtoken": "^9.0.2"
+	},
+	"devDependencies": {
+		"jest": "^29.7.0"
+	}
+}
