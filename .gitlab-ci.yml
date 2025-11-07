@@ -1,3 +1,14 @@
+.default_rules: &default_rules
+  - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+  - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  - if: '$CI_COMMIT_BRANCH =~ $DEV_BRANCH_REGEX'
+  - if: '$CI_COMMIT_BRANCH =~ $QA_BRANCH_REGEX'
+  - if: '$CI_COMMIT_BRANCH =~ $PROD_BRANCH_REGEX'
+
+.dev_only_rules: &dev_only_rules
+  - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ $DEV_BRANCH_REGEX'
+  - if: '$CI_COMMIT_BRANCH =~ $DEV_BRANCH_REGEX'
+
 stages:
   - frontend_build
   - backend_build
@@ -6,6 +17,9 @@ stages:
 
 variables:
   GIT_DEPTH: "0"
+  DEV_BRANCH_REGEX: '^dev(elop)?$'
+  QA_BRANCH_REGEX: '^qa$'
+  PROD_BRANCH_REGEX: '^(main|master|prod(uction)?)$'
 
 frontend_tests:
   image: node:18
@@ -22,9 +36,7 @@ frontend_tests:
     paths:
       - coverage/lcov.info
     expire_in: 1 day
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  rules: *default_rules
 
 backend_tests:
   image:
@@ -64,9 +76,7 @@ backend_tests:
       - backend/coverage/lcov-all.info
       - backend/**/coverage/
     expire_in: 1 week
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  rules: *default_rules
 
 sonarqube_scan:
   image:
@@ -90,9 +100,7 @@ sonarqube_scan:
       sonar-scanner \
         -Dsonar.host.url="${frontend_host}" \
         -Dsonar.login="${sonar_login_value}"
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  rules: *dev_only_rules
 
 sonarqube_backend_scan:
   image:
@@ -117,9 +125,7 @@ sonarqube_backend_scan:
         -Dsonar.host.url="${backend_host}" \
         -Dsonar.login="${sonar_login_value}" \
         -Dproject.settings=backend/sonar-project.properties
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  rules: *dev_only_rules
 
 jmeter_backend_tests:
   image:
@@ -141,6 +147,4 @@ jmeter_backend_tests:
       - results/jmeter-results.jtl
       - results/report
     expire_in: 1 week
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  rules: *default_rules
