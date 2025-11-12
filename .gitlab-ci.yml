@@ -9,10 +9,17 @@
   - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ $DEV_BRANCH_REGEX'
   - if: "$CI_COMMIT_BRANCH =~ $DEV_BRANCH_REGEX"
 
+.dev_qa_rules: &dev_qa_rules
+  - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && ($CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ $DEV_BRANCH_REGEX || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ $QA_BRANCH_REGEX)'
+  - if: "$CI_COMMIT_BRANCH =~ $DEV_BRANCH_REGEX || $CI_COMMIT_BRANCH =~ $QA_BRANCH_REGEX"
+
 stages:
   - frontend_build
   - backend_build
+  - api_install
+  - api_lint
   - quality
+  - api_test
   - backend_test
 
 variables:
@@ -78,6 +85,44 @@ backend_tests:
     expire_in: 1 week
   rules: *default_rules
 
+autotransporta_install_deps:
+  image: node:18
+  stage: api_install
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-autotransporta
+    paths:
+      - autotransporta/node_modules/
+    policy: pull-push
+  script:
+    - cd autotransporta
+    - npm ci --include=dev
+  artifacts:
+    paths:
+      - autotransporta/node_modules/
+    expire_in: 1 week
+  rules: *default_rules
+
+spectral_lint:
+  image: node:18
+  stage: api_lint
+  needs:
+    - autotransporta_install_deps
+  script:
+    - cd autotransporta
+    - LINT_EXIT=0
+    - npm run lint:api || LINT_EXIT=$?
+    - npm run lint:api:sarif || LINT_EXIT=$?
+    - npm run lint:api:html || LINT_EXIT=$?
+    - exit $LINT_EXIT
+  artifacts:
+    when: always
+    paths:
+      - autotransporta/reports/spectral.sarif
+      - autotransporta/reports/spectral.html
+    reports:
+      sast: autotransporta/reports/spectral.sarif
+  rules: *default_rules
+
 sonarqube_scan:
   image:
     name: sonarsource/sonar-scanner-cli:latest
@@ -126,6 +171,22 @@ sonarqube_backend_scan:
         -Dsonar.login="${sonar_login_value}" \
         -Dproject.settings=backend/sonar-project.properties
   rules: *dev_only_rules
+
+newman_tests:
+  image: node:18
+  stage: api_test
+  needs:
+    - autotransporta_install_deps
+  script:
+    - cd autotransporta
+    - npm run test:api
+  artifacts:
+    when: always
+    paths:
+      - autotransporta/reports/newman.xml
+    reports:
+      junit: autotransporta/reports/newman.xml
+  rules: *dev_qa_rules
 
 jmeter_backend_tests:
   image:
