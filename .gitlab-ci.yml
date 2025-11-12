@@ -1,13 +1,13 @@
 .default_rules: &default_rules
   - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-  - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
-  - if: '$CI_COMMIT_BRANCH =~ $DEV_BRANCH_REGEX'
-  - if: '$CI_COMMIT_BRANCH =~ $QA_BRANCH_REGEX'
-  - if: '$CI_COMMIT_BRANCH =~ $PROD_BRANCH_REGEX'
+  - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
+  - if: "$CI_COMMIT_BRANCH =~ $DEV_BRANCH_REGEX"
+  - if: "$CI_COMMIT_BRANCH =~ $QA_BRANCH_REGEX"
+  - if: "$CI_COMMIT_BRANCH =~ $PROD_BRANCH_REGEX"
 
 .dev_only_rules: &dev_only_rules
   - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ $DEV_BRANCH_REGEX'
-  - if: '$CI_COMMIT_BRANCH =~ $DEV_BRANCH_REGEX'
+  - if: "$CI_COMMIT_BRANCH =~ $DEV_BRANCH_REGEX"
 
 stages:
   - frontend_build
@@ -17,9 +17,9 @@ stages:
 
 variables:
   GIT_DEPTH: "0"
-  DEV_BRANCH_REGEX: '^dev(elop)?$'
-  QA_BRANCH_REGEX: '^qa$'
-  PROD_BRANCH_REGEX: '^(main|master|prod(uction)?)$'
+  DEV_BRANCH_REGEX: "^dev(elop)?$"
+  QA_BRANCH_REGEX: "^qa$"
+  PROD_BRANCH_REGEX: "^(main|master|prod(uction)?)$"
 
 frontend_tests:
   image: node:18
