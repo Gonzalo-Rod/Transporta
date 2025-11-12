@@ -24,6 +24,7 @@ stages:
 
 variables:
   GIT_DEPTH: "0"
+  GIT_SUBMODULE_STRATEGY: recursive
   DEV_BRANCH_REGEX: "^dev(elop)?$"
   QA_BRANCH_REGEX: "^qa$"
   PROD_BRANCH_REGEX: "^(main|master|prod(uction)?)$"

@@ -1,0 +1,3 @@
+[submodule "autotransporta"]
+	path = autotransporta
+	url = git@gitlab.com:gonzalo.rodriguez.g/autotransporta.git
