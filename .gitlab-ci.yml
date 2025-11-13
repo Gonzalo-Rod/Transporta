@@ -179,7 +179,7 @@ sonarqube_backend_scan:
   image:
     name: sonarsource/sonar-scanner-cli:latest
     entrypoint: [""]
-  stage: quality
+  stage: sonar
   needs:
     - backend_tests
   script:
