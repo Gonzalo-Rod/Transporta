@@ -16,19 +16,19 @@ const DriversList = ({ navigation, route }) => {
   const mapDrivers = (driversSource) =>
     Array.isArray(driversSource)
       ? driversSource.map((driver, index) => ({
-          id: driver?.placa?.S ?? `driver-${index}`,
-          name: driver?.nombre_conductor?.S ?? 'Nombre no disponible',
-          mail: driver?.correo_conductor?.S ?? 'Correo no disponible',
-          lastname: driver?.apellido_conductor?.S ?? '',
-          phone: driver?.telefono?.S ?? 'Teléfono no disponible',
-          vehicle: driver?.tipo_transporte?.S ?? 'Vehículo no disponible',
-          plate: driver?.placa?.S ?? '',
-          ancho: driver?.dimensiones?.M?.ancho?.S ?? 'N/A',
-          largo: driver?.dimensiones?.M?.largo?.S ?? 'N/A',
-          altura: driver?.dimensiones?.M?.altura?.S ?? 'N/A',
-          rating: defaultRating,
-          image: require('../assets/ConductorTemp.png'),
-        }))
+        id: driver?.placa?.S ?? `driver-${index}`,
+        name: driver?.nombre_conductor?.S ?? 'Nombre no disponible',
+        mail: driver?.correo_conductor?.S ?? 'Correo no disponible',
+        lastname: driver?.apellido_conductor?.S ?? '',
+        phone: driver?.telefono?.S ?? 'Teléfono no disponible',
+        vehicle: driver?.tipo_transporte?.S ?? 'Vehículo no disponible',
+        plate: driver?.placa?.S ?? '',
+        ancho: driver?.dimensiones?.M?.ancho?.S ?? 'N/A',
+        largo: driver?.dimensiones?.M?.largo?.S ?? 'N/A',
+        altura: driver?.dimensiones?.M?.altura?.S ?? 'N/A',
+        rating: defaultRating,
+        image: require('../assets/ConductorTemp.png'),
+      }))
       : [];
 
   useEffect(() => {
@@ -38,8 +38,8 @@ const DriversList = ({ navigation, route }) => {
   const handleSearch = (text) => {
     setSearchQuery(text);
     const drivers = mapDrivers(vehiculos);
-    const filtered = drivers.filter(driver =>
-      driver.name.toLowerCase().includes(text.toLowerCase())
+    const filtered = drivers.filter((driver) =>
+      driver.name.toLowerCase().includes(text.toLowerCase()),
     );
     setFilteredDrivers(filtered);
   };
@@ -87,7 +87,7 @@ const DriversList = ({ navigation, route }) => {
       </View>
       <FlatList
         data={filteredDrivers}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id}
         renderItem={renderDriverItem}
         contentContainerStyle={styles.listContent}
       />
@@ -96,90 +96,90 @@ const DriversList = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
+  driverCard: {
+    alignSelf: 'center',
     backgroundColor: 'white',
+    borderColor: '#E5E5E5',
+    borderRadius: 10,
+    borderWidth: 1,
+    elevation: 2,
+    flexDirection: 'row',
+    marginBottom: 16,
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    width: width - 40,
+  },
+  driverDetails: {
+    color: '#555',
+    fontSize: 14,
+  },
+  driverImage: {
+    borderRadius: 8,
+    height: 80,
+    width: 80,
+  },
+  driverInfo: {
+    justifyContent: 'space-between',
+    marginLeft: 10,
+  },
+  driverName: {
+    color: '#333',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  driverRating: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginTop: 5,
   },
   headerContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    borderBottomColor: '#E5E5E5',
+    flexDirection: 'row',
     paddingHorizontal: 16,
     paddingVertical: 10,
-    borderBottomColor: '#E5E5E5',
   },
   headerTitle: {
+    color: '#333',
     fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 115,
-    color: '#333',
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F4F4F4',
-    borderRadius: 10,
-    paddingHorizontal: 10,
-    marginBottom: 16,
-    width: '91%',
-    marginTop: 10,
-    marginHorizontal: 19,
-  },
-  searchIcon: {
-    marginRight: 8,
-  },
-  searchInput: {
-    flex: 1,
-    height: 40,
-    fontSize: 16,
-    color: 'gray',
   },
   listContent: {
     paddingBottom: 20,
     paddingHorizontal: 16,
   },
-  driverCard: {
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 10,
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 5,
-    elevation: 2,
-    borderColor: '#E5E5E5',
-    borderWidth: 1,
-    width: width - 40, 
-    alignSelf: 'center',
-  },
-  driverImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 8,
-  },
-  driverInfo: {
-    marginLeft: 10,
-    justifyContent: 'space-between',
-  },
-  driverName: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  driverDetails: {
-    fontSize: 14,
-    color: '#555',
-  },
-  driverRating: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 5,
-  },
   ratingText: {
-    fontSize: 14,
     color: '#333',
+    fontSize: 14,
     marginLeft: 5,
+  },
+  safeArea: {
+    backgroundColor: 'white',
+    flex: 1,
+  },
+  searchContainer: {
+    alignItems: 'center',
+    backgroundColor: '#F4F4F4',
+    borderRadius: 10,
+    flexDirection: 'row',
+    marginBottom: 16,
+    marginHorizontal: 19,
+    marginTop: 10,
+    paddingHorizontal: 10,
+    width: '91%',
+  },
+  searchIcon: {
+    marginRight: 8,
+  },
+  searchInput: {
+    color: 'gray',
+    flex: 1,
+    fontSize: 16,
+    height: 40,
   },
 });
 

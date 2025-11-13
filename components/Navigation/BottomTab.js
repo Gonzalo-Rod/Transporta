@@ -26,11 +26,11 @@ export default function BottomTab() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarShowLabel: false, 
+        tabBarShowLabel: false,
         tabBarIcon: ({ focused, color, size }) =>
           renderTabIcon({ routeName: route.name, focused, color, size }),
-        tabBarActiveTintColor: '#6B9AC4', 
-        tabBarInactiveTintColor: 'gray', 
+        tabBarActiveTintColor: '#6B9AC4',
+        tabBarInactiveTintColor: 'gray',
       })}
     >
       <Tab.Screen name="Home" component={Home} />

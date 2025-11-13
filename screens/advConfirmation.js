@@ -54,82 +54,82 @@ const AdvConfirmation = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    padding: 16,
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    marginBottom: 10,
-  },
-  headerTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#333',
-    textAlign: 'left',
-    marginBottom: 20,
-  },
-  detailsContainer: {
-    backgroundColor: '#E2ECF4',
-    borderRadius: 10,
-    padding: 20,
-    marginBottom: 20,
-  },
-  dateText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#333',
-  },
-  addressRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
   addressDetails: {
     marginLeft: 10,
   },
+  addressRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
   addressText: {
-    fontSize: 16,
     color: '#333',
+    fontSize: 16,
   },
   addressType: {
-    fontSize: 14,
     color: '#6B9AC4',
-  },
-  detailsButton: {
-    backgroundColor: '#6B9AC4',
-    paddingVertical: 8, 
-    paddingHorizontal: 25,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 10,
-    alignSelf: 'flex-start', 
-  },
-  detailsButtonText: {
-    color: '#fff',
-    fontSize: 14, 
+    fontSize: 14,
   },
   backButton: {
-    backgroundColor: '#6B9AC4',
-    paddingVertical: 15,
-    borderRadius: 8,
     alignItems: 'center',
-    position: 'absolute', 
+    backgroundColor: '#6B9AC4',
+    borderRadius: 8,
     bottom: 75,
     left: 16,
+    paddingVertical: 15,
+    position: 'absolute',
     right: 16,
   },
   backButtonText: {
     color: '#fff',
     fontSize: 16,
+  },
+  container: {
+    backgroundColor: '#fff',
+    flex: 1,
+    padding: 16,
+  },
+  dateText: {
+    color: '#333',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  detailsButton: {
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    backgroundColor: '#6B9AC4',
+    borderRadius: 8,
+    marginTop: 10,
+    paddingHorizontal: 25,
+    paddingVertical: 8,
+  },
+  detailsButtonText: {
+    color: '#fff',
+    fontSize: 14,
+  },
+  detailsContainer: {
+    backgroundColor: '#E2ECF4',
+    borderRadius: 10,
+    marginBottom: 20,
+    padding: 20,
+  },
+  headerContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    marginBottom: 10,
+  },
+  headerTitle: {
+    color: '#333',
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'left',
+  },
+  safeArea: {
+    backgroundColor: '#fff',
+    flex: 1,
   },
 });
 

@@ -78,85 +78,85 @@ const PaymentInfo = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginLeft: 150,
-    color: '#333',
-  },
-  paymentMethodsList: {
-    paddingHorizontal: 20,
-    paddingTop: 20,
-  },
-  paymentMethodContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 15,
-    backgroundColor: 'white',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#E5E5E5',
-    marginBottom: 10,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 5,
-    minHeight: 70,
-  },
-  selectedPaymentMethod: {
-    borderColor: '#6B9AC4',
-  },
-  paymentMethodInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  paymentType: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#1A73E8',
-    marginRight: 10,
-  },
-  paymentDetails: {
-    flexDirection: 'column',
-  },
-  paymentText: {
-    fontSize: 16,
-    color: '#333',
-  },
-  efectivoText: {
-    marginLeft: 10,
-  },
-  paymentExpiry: {
-    fontSize: 14,
-    color: 'gray',
+  add: {
+    marginLeft: 5,
   },
   addPaymentButton: {
     justifyContent: 'left',
   },
   addPaymentText: {
-    fontSize: 16,
     color: '#333',
+    fontSize: 16,
     marginLeft: 15,
   },
+  efectivoText: {
+    marginLeft: 10,
+  },
+  headerContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+  },
+  headerTitle: {
+    color: '#333',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginLeft: 150,
+  },
   icon: {
-    marginRight: 7,
     marginLeft: 6,
+    marginRight: 7,
+  },
+  paymentDetails: {
+    flexDirection: 'column',
+  },
+  paymentExpiry: {
+    color: 'gray',
+    fontSize: 14,
+  },
+  paymentMethodContainer: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderColor: '#E5E5E5',
+    borderRadius: 8,
+    borderWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+    minHeight: 70,
+    padding: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+  },
+  paymentMethodInfo: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  paymentMethodsList: {
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
+  paymentText: {
+    color: '#333',
+    fontSize: 16,
+  },
+  paymentType: {
+    color: '#1A73E8',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginRight: 10,
+  },
+  safeArea: {
+    backgroundColor: 'white',
+    flex: 1,
   },
 
-  add: {
-    marginLeft: 5,
-  }
+  selectedPaymentMethod: {
+    borderColor: '#6B9AC4',
+  },
 });
 
 export default PaymentInfo;

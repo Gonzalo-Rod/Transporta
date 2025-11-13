@@ -42,7 +42,7 @@ const AddCreditCard = ({ navigation }) => {
             placeholder="Nombre del titular"
           />
         </View>
-        
+
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Número</Text>
           <TextInput
@@ -85,73 +85,73 @@ const AddCreditCard = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    paddingHorizontal: 20,
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginLeft: 53,
-    color: '#333',
-  },
   cardContainer: {
-    width: width * 0.9,
+    alignSelf: 'center',
     aspectRatio: 1.6,
     backgroundColor: '#000',
     borderRadius: 15,
-    padding: 20,
     marginVertical: 20,
-    alignSelf: 'center',
-  },
-  cardNumber: {
-    marginTop: 135,
-    fontSize: 18,
-    color: '#FFF',
-    letterSpacing: 2,
+    padding: 20,
+    width: width * 0.9,
   },
   cardHolder: {
-    fontSize: 16,
     color: '#FFF',
+    fontSize: 16,
+  },
+  cardNumber: {
+    color: '#FFF',
+    fontSize: 18,
+    letterSpacing: 2,
+    marginTop: 135,
+  },
+  container: {
+    backgroundColor: 'white',
+    flex: 1,
+    paddingHorizontal: 20,
   },
   expiryDate: {
-    fontSize: 16,
     color: '#FFF',
+    fontSize: 16,
+  },
+  headerContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  headerTitle: {
+    color: '#333',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginLeft: 53,
+  },
+  infoLabel: {
+    color: '#555',
+    fontSize: 16,
+  },
+  infoRow: {
+    borderBottomColor: '#6B9AC4',
+    borderBottomWidth: 0.5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 16,
+  },
+  input: {
+    color: '#333',
+    fontSize: 16,
+    paddingVertical: 5,
+    textAlign: 'right',
   },
   inputContainer: {
     paddingHorizontal: 30,
   },
-  infoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 16,
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#6B9AC4',
-  },
-  infoLabel: {
-    fontSize: 16,
-    color: '#555',
-  },
-  input: {
-    fontSize: 16,
-    textAlign: 'right',
-    color: '#333',
-    paddingVertical: 5,
-  },
   saveButton: {
+    alignItems: 'center',
     backgroundColor: '#6B9AC4',
     borderRadius: 10,
-    paddingVertical: 15,
-    marginTop: 190,
-    alignItems: 'center',
     marginHorizontal: 28,
+    marginTop: 190,
+    paddingVertical: 15,
   },
   saveButtonText: {
     color: 'white',

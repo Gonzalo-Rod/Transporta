@@ -54,17 +54,17 @@ const ReservationRoute = () => {
         <Text style={styles.headerText}>Selecciona la Ruta</Text>
 
         <SearchLocation
-        placeholder="Buscar partida"
-        onLocationSelect={(location) => {
-          console.log('Ubicación seleccionada:', location);
-          setInicio(location);
-        }}
-      />
+          placeholder="Buscar partida"
+          onLocationSelect={(location) => {
+            console.log('Ubicación seleccionada:', location);
+            setInicio(location);
+          }}
+        />
         <SearchLocation
-        placeholder="Buscar destino"
-        onLocationSelect={(location) => {
-          console.log('Ubicación seleccionada:', location);
-          setLlegada(location);
+          placeholder="Buscar destino"
+          onLocationSelect={(location) => {
+            console.log('Ubicación seleccionada:', location);
+            setLlegada(location);
           }}
         />
 
@@ -96,111 +96,111 @@ const ReservationRoute = () => {
         <FlatList
           data={routes}
           renderItem={renderRoute}
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
           style={styles.routeList}
         />
 
         <TouchableOpacity
           testID="reservation-route-continue"
           style={styles.continueButton}
-          onPress={() => navigation.navigate('RsvChooseVehicle', {inicio, llegada, fecha, hora}) }
+          onPress={() => navigation.navigate('RsvChooseVehicle', { inicio, llegada, fecha, hora }) }
         >
           <Text style={styles.continueButtonText}>Continuar</Text>
         </TouchableOpacity>
       </View>
-      
+
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  input: {
-    marginLeft: 10,
-    fontSize: 16,
-    color: '#333',
-    flex: 1,
-  },
-  safeContainer: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  container: {
-    flex: 1,
-    paddingHorizontal: 16,
-    backgroundColor: 'white',
-  },
-  headerText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginVertical: 20,
-  },
   backButton: {
-    position: 'absolute',
     left: 16,
+    position: 'absolute',
     top: 20,
   },
-  inputRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F4F4F4',
-    paddingHorizontal: 10,
-    paddingVertical: 15,
-    borderRadius: 8,
-    marginBottom: 15,
-  },
-  dateTimeContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  smallInput: {
-    flex: 1,
-    marginRight: 10,
-  },
-  routeList: {
-    marginVertical: 10,
-  },
-  routeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 12,
-    borderRadius: 8,
+  container: {
     backgroundColor: 'white',
-    marginBottom: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  icon: {
-    width: 30,
-    height: 30,
-    marginRight: 12,
-  },
-  routeTextContainer: {
     flex: 1,
-  },
-  routeText: {
-    fontSize: 14,
-    color: '#000',
-  },
-  routeDate: {
-    fontSize: 12,
-    color: '#777',
+    paddingHorizontal: 16,
   },
   continueButton: {
-    backgroundColor: '#6B9AC4',
-    paddingVertical: 15,
-    borderRadius: 8,
     alignItems: 'center',
-    marginTop: 20,
+    backgroundColor: '#6B9AC4',
+    borderRadius: 8,
     marginHorizontal: 20,
+    marginTop: 20,
+    paddingVertical: 15,
   },
   continueButtonText: {
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  dateTimeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  headerText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginVertical: 20,
+    textAlign: 'center',
+  },
+  icon: {
+    height: 30,
+    marginRight: 12,
+    width: 30,
+  },
+  input: {
+    color: '#333',
+    flex: 1,
+    fontSize: 16,
+    marginLeft: 10,
+  },
+  inputRow: {
+    alignItems: 'center',
+    backgroundColor: '#F4F4F4',
+    borderRadius: 8,
+    flexDirection: 'row',
+    marginBottom: 15,
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+  },
+  routeContainer: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 8,
+    elevation: 2,
+    flexDirection: 'row',
+    marginBottom: 10,
+    padding: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  routeDate: {
+    color: '#777',
+    fontSize: 12,
+  },
+  routeList: {
+    marginVertical: 10,
+  },
+  routeText: {
+    color: '#000',
+    fontSize: 14,
+  },
+  routeTextContainer: {
+    flex: 1,
+  },
+  safeContainer: {
+    backgroundColor: 'white',
+    flex: 1,
+  },
+  smallInput: {
+    flex: 1,
+    marginRight: 10,
   },
 });
 

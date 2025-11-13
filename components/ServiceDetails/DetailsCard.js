@@ -2,9 +2,9 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import moment from "moment";
-import "moment-timezone";
-import "moment/locale/es";
+import moment from 'moment';
+import 'moment-timezone';
+import 'moment/locale/es';
 
 const driversData = [
   { id: '1', name: 'Pedro Lopez Alvarez', plate: 'AEZ037', vehicle: 'HYUNDAI Negro', rating: 4.5, image: require('../../assets/ConductorTemp.png') },
@@ -16,9 +16,9 @@ const DetailsCard = () => {
   const navigation = useNavigation();
 
   const formattedDateTime = moment
-    .tz(`${fecha} ${hora}`, "YYYY-MM-DD HH:mm:ss", "America/Lima") 
-    .locale("es") 
-    .format("dddd, MMMM D HH:mm[h] [GMT-5]");
+      .tz(`${fecha} ${hora}`, 'YYYY-MM-DD HH:mm:ss', 'America/Lima')
+      .locale('es')
+      .format('dddd, MMMM D HH:mm[h] [GMT-5]');
 
   const capitalizedDateTime =
     formattedDateTime.charAt(0).toUpperCase() +
@@ -26,8 +26,8 @@ const DetailsCard = () => {
 
   const driver = driversData[0];
 
-  const creditCard = "**** 1234";
-  const price = "S/. 100";
+  const creditCard = '**** 1234';
+  const price = 'S/. 100';
 
   return (
     <SafeAreaView style={styles.container}>
@@ -88,117 +88,117 @@ const DetailsCard = () => {
 };
 
 const styles = StyleSheet.create({
+  cancelButton: {
+    alignItems: 'center',
+    backgroundColor: '#D9534F',
+    borderRadius: 10,
+    marginTop: 15,
+    paddingVertical: 15,
+  },
+  cancelButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   container: {
-    flex: 1,
     backgroundColor: '#FFFFFF',
+    flex: 1,
     paddingHorizontal: 20,
   },
+  dateText: {
+    color: '#333',
+    fontSize: 14,
+    marginTop: 5,
+  },
   driverCard: {
-    flexDirection: 'row',
     alignItems: 'center',
-    padding: 15,
-    borderRadius: 10,
     backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    elevation: 3,
+    flexDirection: 'row',
     marginBottom: 15,
+    padding: 15,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 5,
-    elevation: 3,
+  },
+  driverDetails: {
+    color: '#666',
+    fontSize: 14,
   },
   driverImage: {
-    width: 60,
-    height: 60,
     borderRadius: 30,
+    height: 60,
     marginRight: 10,
+    width: 60,
   },
   driverInfo: {
     flex: 1,
   },
   driverName: {
+    color: '#333',
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
   },
-  driverDetails: {
-    fontSize: 14,
-    color: '#666',
+  paymentAmount: {
+    color: '#333',
+    fontSize: 16,
+  },
+  paymentContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  paymentDetails: {
+    color: '#333',
+    fontSize: 16,
+  },
+  paymentDetailsContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginTop: 6,
+  },
+  paymentIcon: {
+    height: 20,
+    marginRight: 8,
+    width: 30,
   },
   ratingContainer: {
+    alignItems: 'center',
     marginRight: 10,
-    alignItems: 'center', 
   },
   ratingIcon: {
-    marginBottom: 2, 
+    marginBottom: 2,
   },
   ratingText: {
-    fontSize: 16,
     color: '#4A90E2',
-  },
-  section: {
-    borderTopWidth: 1,
-    borderTopColor: '#6B9AC4',
-    paddingVertical: 10,
-  },
-  sectionTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
+  },
+  routeAddress: {
     color: '#333',
-    marginBottom: 5,
+    fontSize: 14,
   },
   routeContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     marginVertical: 5,
   },
   routePoint: {
-    fontSize: 14,
     color: '#666',
+    fontSize: 14,
     marginRight: 10,
   },
-  routeAddress: {
-    fontSize: 14,
+  section: {
+    borderTopColor: '#6B9AC4',
+    borderTopWidth: 1,
+    paddingVertical: 10,
+  },
+  sectionTitle: {
     color: '#333',
-  },
-  paymentContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  paymentDetailsContainer: {
-    marginTop: 6,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  paymentIcon: {
-    width: 30,
-    height: 20,
-    marginRight: 8,
-  },
-  paymentDetails: {
     fontSize: 16,
-    color: '#333',
-  },
-  paymentAmount: {
-    fontSize: 16,
-    color: '#333',
-  },
-  dateText: {
-    fontSize: 14,
-    color: '#333',
-    marginTop: 5,
-  },
-  cancelButton: {
-    marginTop: 15,
-    backgroundColor: '#D9534F',
-    paddingVertical: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  cancelButtonText: {
-    fontSize: 16,
-    color: '#FFFFFF',
     fontWeight: 'bold',
+    marginBottom: 5,
   },
 });
 

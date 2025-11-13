@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, TouchableOpacity, StyleSheet, Image, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import axios from "axios";
+import axios from 'axios';
 import { getUser, getToken } from '../utils/Auth';
 import { useFocusEffect } from '@react-navigation/native';
 
-const url = "https://swgopvgvf5.execute-api.us-east-1.amazonaws.com/dev/get-mis-reservas";
+const url = 'https://swgopvgvf5.execute-api.us-east-1.amazonaws.com/dev/get-mis-reservas';
 const headers = {
-  "Content-Type": "application/json"
+  'Content-Type': 'application/json',
 };
 
 const parsePayload = (data) => {
@@ -47,17 +47,17 @@ const formatReservation = (item, index) => ({
 
 const buildRequestUrl = (baseUrl, params) => {
   const query = Object.entries(params)
-    .filter(([, value]) => value !== undefined && value !== null)
-    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-    .join('&');
+      .filter(([, value]) => value !== undefined && value !== null)
+      .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+      .join('&');
 
   return query ? `${baseUrl}?${query}` : baseUrl;
 };
 
 const Reservations = ({ navigation }) => {
   const [reservas, setReservas] = useState([]);
-  const [user, setUser] = useState("");
-  const [token, setToken] = useState("");
+  const [user, setUser] = useState('');
+  const [token, setToken] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -116,11 +116,11 @@ const Reservations = ({ navigation }) => {
   };
 
   useFocusEffect(
-    React.useCallback(() => {
-      if (user && token) {
-        reservations();
-      }
-    }, [user, token])
+      React.useCallback(() => {
+        if (user && token) {
+          reservations();
+        }
+      }, [user, token]),
   );
 
   const handleNavigateToDetails = (reservation) => {
@@ -191,81 +191,81 @@ const Reservations = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
+    flex: 1,
     paddingHorizontal: 16,
     paddingTop: 20,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-    color: '#333',
-  },
   reservaButton: {
-    flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#ffffff',
-    borderWidth: 1,
-    borderRadius: 12,
     borderColor: '#E0E0E0',
-    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    flexDirection: 'row',
     marginBottom: 20,
     marginHorizontal: 20,
+    padding: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
-  },
-  reservaIcon: {
-    width: 100,
-    height: 100,
-    marginRight: 16,
-  },
-  reservaTextContainer: {
-    marginVertical: 30,
-    flex: 1,
-  },
-  reservaTitle: {
-    fontSize: 28,
-    fontWeight: '500',
-    color: '#6B9AC4',
   },
   reservaDescription: {
-    fontSize: 16,
     color: '#666',
+    fontSize: 16,
   },
-  reservationsList: {
-    marginBottom: 20,
+  reservaIcon: {
+    height: 100,
+    marginRight: 16,
+    width: 100,
+  },
+  reservaTextContainer: {
+    flex: 1,
+    marginVertical: 30,
+  },
+  reservaTitle: {
+    color: '#6B9AC4',
+    fontSize: 28,
+    fontWeight: '500',
+  },
+  reservationDate: {
+    color: '#888',
+    fontSize: 14,
   },
   reservationItem: {
-    flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#ffffff',
+    borderColor: '#E0E0E0',
     borderRadius: 8,
-    padding: 12,
+    borderWidth: 1,
+    flexDirection: 'row',
     marginBottom: 10,
     marginHorizontal: 20,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
+    padding: 12,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+  },
+  reservationText: {
+    color: '#333',
+    fontSize: 16,
   },
   reservationTextContainer: {
     flex: 1,
     marginLeft: 12,
   },
-  reservationText: {
-    fontSize: 16,
-    color: '#333',
+  reservationsList: {
+    marginBottom: 20,
   },
-  reservationDate: {
-    fontSize: 14,
-    color: '#888',
+  title: {
+    color: '#333',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    marginTop: 10,
+    textAlign: 'center',
   },
 });
 

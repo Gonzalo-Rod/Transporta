@@ -1,63 +1,65 @@
-import React,{useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 const { width } = Dimensions.get('window');
-import { getUser,getToken } from "../utils/Auth";
-const url = "https://swgopvgvf5.execute-api.us-east-1.amazonaws.com/dev/get-user";
+import { getUser, getToken } from '../utils/Auth';
+const url = 'https://swgopvgvf5.execute-api.us-east-1.amazonaws.com/dev/get-user';
 const headers = {
-	"Content-Type":"application/json"
+  'Content-Type': 'application/json',
 };
-import axios from "axios";
+import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
 
 
-
 const UserProfile = ({ navigation }) => {
-	const [user,setUser] = useState("");
-	const [token,setToken] = useState("");
-	const [user_data,setUser_data] = useState("");
+  const [user, setUser] = useState('');
+  const [token, setToken] = useState('');
+  const [user_data, setUser_data] = useState('');
 
-	const test = () => {
-		(async () => {
-			const useR = await getUser();
-			const tokeN = await getToken();
-			setUser(useR);
-			setToken(tokeN);
-		})();
-	};
-	useEffect(() => {test();},[]);
-	const getUsersito = async () => {
-		try {
-			const info = {
-				correo: user,
-				token: token
-			};
-			const response = await axios.post(url, info, { headers });
-			let payload = response.data;
-			if (payload?.body) {
-				try {
-					payload = JSON.parse(payload.body);
-				} catch (parseError) {
-					console.log('Error parsing user response body:', parseError);
-				}
-			}
-			const userData = payload?.response;
-			if (userData) {
-				setUser_data(userData);
-				console.log(userData);
-			}
-
-		} catch (error){ console.log(error); }
-	}
-	
-	
-  useFocusEffect(
-    React.useCallback(() => {
-      if (user && token) {
-        getUsersito();   
+  const test = () => {
+    (async () => {
+      const useR = await getUser();
+      const tokeN = await getToken();
+      setUser(useR);
+      setToken(tokeN);
+    })();
+  };
+  useEffect(() => {
+    test();
+  }, []);
+  const getUsersito = async () => {
+    try {
+      const info = {
+        correo: user,
+        token: token,
+      };
+      const response = await axios.post(url, info, { headers });
+      let payload = response.data;
+      if (payload?.body) {
+        try {
+          payload = JSON.parse(payload.body);
+        } catch (parseError) {
+          console.log('Error parsing user response body:', parseError);
+        }
       }
-    }, [user, token])  
+      const userData = payload?.response;
+      if (userData) {
+        setUser_data(userData);
+        console.log(userData);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+  useFocusEffect(
+      React.useCallback(() => {
+        if (user && token) {
+          getUsersito();
+        }
+      }, [user, token]),
   );
 
 
@@ -72,8 +74,8 @@ const UserProfile = ({ navigation }) => {
 
       <View style={styles.profileContainer}>
         <View style={styles.profileDetails}>
-          <Text style={styles.userName}>{user_data?.nombre?.S ||"Cargando..."} {user_data?.apellido?.S}</Text>
-          <Text style={styles.userRole}>{"User"}</Text>
+          <Text style={styles.userName}>{user_data?.nombre?.S ||'Cargando...'} {user_data?.apellido?.S}</Text>
+          <Text style={styles.userRole}>{'User'}</Text>
         </View>
         <Image source={{ uri: 'https://via.placeholder.com/100' }} style={styles.userImage} />
       </View>
@@ -90,7 +92,7 @@ const UserProfile = ({ navigation }) => {
         <TouchableOpacity
           testID="profile-payment"
           style={styles.button}
-          onPress={() => navigation.navigate('PaymentInfo',{user_data:user_data?.metodo_de_pago?.S})}
+          onPress={() => navigation.navigate('PaymentInfo', { user_data: user_data?.metodo_de_pago?.S })}
         >
           <Ionicons name="card-outline" size={20} color="#6B9AC4" />
           <Text style={styles.buttonText}>Pago</Text>
@@ -101,15 +103,15 @@ const UserProfile = ({ navigation }) => {
         <Text style={styles.infoTitle}>Datos personales</Text>
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Nombre</Text>
-          <Text style={styles.infoValue}>{`${user_data?.nombre?.S ?? ""} ${user_data?.apellido?.S ?? ""}`.trim() || "Cargando..."}</Text>
+          <Text style={styles.infoValue}>{`${user_data?.nombre?.S ?? ''} ${user_data?.apellido?.S ?? ''}`.trim() || 'Cargando...'}</Text>
         </View>
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Celular</Text>
-          <Text style={styles.infoValue}>{user_data?.telefono?.S || "Cargando..."}</Text>
+          <Text style={styles.infoValue}>{user_data?.telefono?.S || 'Cargando...'}</Text>
         </View>
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Email</Text>
-          <Text style={styles.infoValue}>{user_data?.correo?.S || "Cargando..."}</Text>
+          <Text style={styles.infoValue}>{user_data?.correo?.S || 'Cargando...'}</Text>
         </View>
       </View>
 
@@ -125,114 +127,113 @@ const UserProfile = ({ navigation }) => {
 };
 
 
-
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
+  button: {
+    alignItems: 'center',
     backgroundColor: 'white',
+    borderColor: '#E5E5E5',
+    borderRadius: 8,
+    borderWidth: 1,
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'center',
+    marginHorizontal: 5,
+    padding: 16,
+  },
+  buttonText: {
+    color: '#333',
+    fontSize: 18,
+    marginLeft: 5,
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.03,
+    shadowRadius: 5,
+  },
+  generalInfo: {
+    paddingHorizontal: 30,
   },
   headerContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    borderBottomColor: '#E5E5E5',
+    flexDirection: 'row',
     paddingHorizontal: 16,
     paddingVertical: 10,
-    borderBottomColor: '#E5E5E5',
   },
   headerTitle: {
+    color: '#333',
     fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 136,
-    color: '#333',
   },
-  profileContainer: {
+  infoLabel: {
+    color: '#555',
+    fontSize: 16,
+  },
+  infoRow: {
+    borderBottomColor: '#6B9AC4',
+    borderBottomWidth: 0.5,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingVertical: 16,
+  },
+  infoTitle: {
+    color: '#333',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginVertical: 10,
+  },
+  infoValue: {
+    color: '#333',
+    fontSize: 16,
+  },
+  logoutButton: {
     alignItems: 'center',
+    backgroundColor: '#D9534F',
+    borderRadius: 10,
+    marginHorizontal: 30,
+    marginTop: 30,
+    paddingVertical: 15,
+  },
+  logoutText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  profileContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 20,
   },
   profileDetails: {
     flexDirection: 'column',
   },
-  userName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  userRole: {
-    fontSize: 16,
-    color: 'gray',
-    marginTop: 5,
+  safeArea: {
+    backgroundColor: 'white',
+    flex: 1,
   },
   userImage: {
-    width: 90,
-    height: 90,
     borderRadius: 50,
+    height: 90,
     marginRight: 10,
+    width: 90,
   },
-  buttonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-    shadowColor: '#000',
-    shadowOpacity: 0.03,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 5,
-  },
-  button: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    padding: 16,
-    borderColor: '#E5E5E5',
-    borderWidth: 1,
-    borderRadius: 8,
-    flex: 1,
-    justifyContent: 'center',
-    marginHorizontal: 5,
-  },
-  buttonText: {
-    fontSize: 18,
+  userName: {
     color: '#333',
-    marginLeft: 5,
-  },
-  generalInfo: {
-    paddingHorizontal: 30,
-  },
-  infoTitle: {
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginVertical: 10,
-    color: '#333',
   },
-  infoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 16,
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#6B9AC4',
-  },
-  infoLabel: {
+  userRole: {
+    color: 'gray',
     fontSize: 16,
-    color: '#555',
-  },
-  infoValue: {
-    fontSize: 16,
-    color: '#333',
-  },
-  logoutButton: {
-    backgroundColor: '#D9534F',
-    paddingVertical: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginTop: 30,
-    marginHorizontal: 30,
-  },
-  logoutText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
+    marginTop: 5,
   },
 });
 

@@ -8,7 +8,7 @@ const Route = () => {
   const navigation = useNavigation();
   const [inicio, setInicio] = useState('');
   const [llegada, setLlegada] = useState('');
-  const [focusedInput, setFocusedInput] = useState(null); 
+  const [focusedInput, setFocusedInput] = useState(null);
 
   const routes = [
     { id: '1', address: 'Jr. Medrano Silva 165, Barranco', date: '4/9/2024' },
@@ -18,9 +18,9 @@ const Route = () => {
 
   const handleRoutePress = (address) => {
     if (focusedInput === 'partida') {
-      setInicio(address);    
+      setInicio(address);
     } else if (focusedInput === 'destino') {
-      setLlegada(address);    
+      setLlegada(address);
     }
   };
 
@@ -71,7 +71,7 @@ const Route = () => {
         <FlatList
           data={routes}
           renderItem={renderRoute}
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
           style={styles.routeList}
         />
 
@@ -83,85 +83,85 @@ const Route = () => {
           <Text style={styles.continueButtonText}>Continuar</Text>
         </TouchableOpacity>
       </View>
-      
+
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  safeContainer: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  container: {
-    flex: 1,
-    paddingHorizontal: 16,
-    backgroundColor: 'white',
-  },
-  headerText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginVertical: 20,
-  },
   backButton: {
-    position: 'absolute',
     left: 16,
+    position: 'absolute',
     top: 20,
   },
-  input: {
-    height: 50,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 10,
-    paddingHorizontal: 16,
-    marginBottom: 15,
-    backgroundColor: '#F6F6F6',
-  },
-  routeList: {
-    marginVertical: 10,
-  },
-  routeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 12,
-    borderRadius: 8,
+  container: {
     backgroundColor: 'white',
-    marginBottom: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  icon: {
-    width: 30,
-    height: 30,
-    marginRight: 12,
-  },
-  routeTextContainer: {
     flex: 1,
-  },
-  routeText: {
-    fontSize: 14,
-    color: '#000',
-  },
-  routeDate: {
-    fontSize: 12,
-    color: '#777',
+    paddingHorizontal: 16,
   },
   continueButton: {
-    backgroundColor: '#6B9AC4',
-    paddingVertical: 15,
-    borderRadius: 8,
     alignItems: 'center',
-    marginTop: 20,
+    backgroundColor: '#6B9AC4',
+    borderRadius: 8,
     marginHorizontal: 20,
+    marginTop: 20,
+    paddingVertical: 15,
   },
   continueButtonText: {
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  headerText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginVertical: 20,
+    textAlign: 'center',
+  },
+  icon: {
+    height: 30,
+    marginRight: 12,
+    width: 30,
+  },
+  input: {
+    backgroundColor: '#F6F6F6',
+    borderColor: '#ccc',
+    borderRadius: 10,
+    borderWidth: 1,
+    height: 50,
+    marginBottom: 15,
+    paddingHorizontal: 16,
+  },
+  routeContainer: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 8,
+    elevation: 2,
+    flexDirection: 'row',
+    marginBottom: 10,
+    padding: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  routeDate: {
+    color: '#777',
+    fontSize: 12,
+  },
+  routeList: {
+    marginVertical: 10,
+  },
+  routeText: {
+    color: '#000',
+    fontSize: 14,
+  },
+  routeTextContainer: {
+    flex: 1,
+  },
+  safeContainer: {
+    backgroundColor: 'white',
+    flex: 1,
   },
 });
 

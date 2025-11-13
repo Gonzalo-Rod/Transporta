@@ -38,58 +38,58 @@ const Card = () => {
 };
 
 const styles = StyleSheet.create({
-  cardContainer: {
-    backgroundColor: 'white',
-    padding: 20,
-    height: 450,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#6B9AC4',
-    textAlign: 'Left',
-  },
-  subtitle: {
-    fontSize: 14,
+  buttonSubtitle: {
     color: 'black',
-    textAlign: 'Left',
-    marginVertical: 8,
+    fontSize: 12,
+  },
+  buttonTitle: {
+    color: '#6B9AC4',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   cardButton: {
-    backgroundColor: '#ffffff',
-    padding: 15,
-    borderRadius: 10,
-    marginVertical: 10,
-    flexDirection: 'row', 
     alignItems: 'center',
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    elevation: 3,
+    flexDirection: 'row',
+    marginVertical: 10,
+    padding: 15,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 5,
-    elevation: 3,
+  },
+  cardContainer: {
+    backgroundColor: 'white',
+    elevation: 5,
+    height: 450,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
   },
   icon: {
+    height: 60,
+    marginRight: 15,
     width: 60,
-    height: 60, 
-    marginRight: 15, 
+  },
+  subtitle: {
+    color: 'black',
+    fontSize: 14,
+    marginVertical: 8,
+    textAlign: 'Left',
   },
   textContainer: {
     flexDirection: 'column',
-    flexShrink: 1, 
+    flexShrink: 1,
   },
-  buttonTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
+  title: {
     color: '#6B9AC4',
-  },
-  buttonSubtitle: {
-    fontSize: 12,
-    color: 'black',
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'Left',
   },
 });
 

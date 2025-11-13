@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-} from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+} from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 import auth from '../utils/Auth';
-import axios from "axios"; 
+import axios from 'axios';
 
 const extractSessionData = (rawData) => {
   if (!rawData) {
@@ -24,7 +24,7 @@ const extractSessionData = (rawData) => {
     try {
       return JSON.parse(rawData.body);
     } catch (parseError) {
-      console.log("Error parsing response body:", parseError);
+      console.log('Error parsing response body:', parseError);
       return null;
     }
   }
@@ -33,7 +33,7 @@ const extractSessionData = (rawData) => {
 };
 
 const buildErrorMessage = (error) => {
-  const defaultMessage = "Error al iniciar sesión. Inténtalo de nuevo.";
+  const defaultMessage = 'Error al iniciar sesión. Inténtalo de nuevo.';
   const errorData = error?.response?.data;
 
   if (!errorData) {
@@ -49,7 +49,7 @@ const buildErrorMessage = (error) => {
       const parsed = JSON.parse(errorData.body);
       return parsed.message || defaultMessage;
     } catch (parseError) {
-      console.log("Error parsing error body:", parseError);
+      console.log('Error parsing error body:', parseError);
     }
   }
 
@@ -57,15 +57,15 @@ const buildErrorMessage = (error) => {
 };
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
 
   const logIn = async () => {
     const url_register =
-      "https://swgopvgvf5.execute-api.us-east-1.amazonaws.com/dev/login-user";
+      'https://swgopvgvf5.execute-api.us-east-1.amazonaws.com/dev/login-user';
     const headers = {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     };
 
     try {
@@ -75,15 +75,15 @@ export default function LoginScreen({ navigation }) {
       const sessionData = extractSessionData(response.data);
 
       if (sessionData?.token && sessionData?.user?.correo) {
-				console.log(sessionData);
-				auth.setUserSession(sessionData.user.correo, sessionData.token);
-        navigation.navigate("Main");
+        console.log(sessionData);
+        auth.setUserSession(sessionData.user.correo, sessionData.token);
+        navigation.navigate('Main');
       } else {
-        const message = sessionData?.message || "Correo o contraseña incorrectos";
+        const message = sessionData?.message || 'Correo o contraseña incorrectos';
         setErrorMessage(message);
       }
     } catch (error) {
-      console.log("Error:", error);
+      console.log('Error:', error);
       setErrorMessage(buildErrorMessage(error));
     }
   };
@@ -91,7 +91,7 @@ export default function LoginScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-        Bienvenido a <Text style={{ color: "#6B9AC4" }}>Transporta</Text>{" "}
+        Bienvenido a <Text style={{ color: '#6B9AC4' }}>Transporta</Text>{' '}
       </Text>
       <Text style={styles.subtitle}>Moviliza carga rápido y seguro</Text>
 
@@ -132,9 +132,9 @@ export default function LoginScreen({ navigation }) {
         <Text style={styles.socialText}>Ingresa con Apple</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
         <Text style={styles.registerText}>
-          ¿No tienes cuenta? <Text style={{ color: "#6B9AC4" }}>Regístrate</Text>
+          ¿No tienes cuenta? <Text style={{ color: '#6B9AC4' }}>Regístrate</Text>
         </Text>
       </TouchableOpacity>
 
@@ -148,92 +148,92 @@ export default function LoginScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'white',
     flex: 1,
+    justifyContent: 'center',
     padding: 20,
-    justifyContent: "center",
-    backgroundColor: "white",
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 14,
-    textAlign: "center",
-    marginBottom: 20,
-    color: "gray",
-  },
-  input: {
-    height: 50,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    marginBottom: 15,
-    marginHorizontal: 20,
   },
   continueButton: {
-    backgroundColor: "#6B9AC4",
-    height: 50,
+    alignItems: 'center',
+    backgroundColor: '#6B9AC4',
     borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
+    height: 50,
+    justifyContent: 'center',
     marginBottom: 15,
     marginHorizontal: 20,
   },
   continueText: {
-    color: "white",
+    color: 'white',
     fontSize: 16,
   },
   dividerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    alignItems: 'center',
+    flexDirection: 'row',
     marginBottom: 15,
     marginHorizontal: 20,
   },
-  line: {
-    flex: 1,
-    height: 1,
-    backgroundColor: "#ccc",
+  errorText: {
+    color: 'red',
+    marginBottom: 10,
+    textAlign: 'center',
   },
-  orText: {
-    marginHorizontal: 10,
-    color: "gray",
+  footerText: {
+    color: 'gray',
+    fontSize: 12,
+    marginHorizontal: 20,
+    marginTop: 20,
+    textAlign: 'center',
   },
-  socialButton: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    height: 50,
+  input: {
+    borderColor: '#ccc',
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#ccc",
+    height: 50,
+    marginBottom: 15,
+    marginHorizontal: 20,
+    paddingHorizontal: 15,
+  },
+  line: {
+    backgroundColor: '#ccc',
+    flex: 1,
+    height: 1,
+  },
+  orText: {
+    color: 'gray',
+    marginHorizontal: 10,
+  },
+  registerText: {
+    color: 'gray',
+    fontSize: 14,
+    marginTop: 10,
+    textAlign: 'center',
+  },
+  socialButton: {
+    alignItems: 'center',
+    borderColor: '#ccc',
+    borderRadius: 10,
+    borderWidth: 1,
+    flexDirection: 'row',
+    height: 50,
+    justifyContent: 'center',
     marginBottom: 10,
     marginHorizontal: 20,
   },
   socialText: {
-    marginLeft: 10,
     fontSize: 16,
+    marginLeft: 10,
   },
-  footerText: {
-    fontSize: 12,
-    textAlign: "center",
-    color: "gray",
-    marginTop: 20,
-    marginHorizontal: 20,
-  },
-  errorText: {
-    color: "red",
-    textAlign: "center",
-    marginBottom: 10,
-  },
-  registerText: {
+  subtitle: {
+    color: 'gray',
     fontSize: 14,
-    textAlign: "center",
-    color: "gray",
-    marginTop: 10,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    textAlign: 'center',
   },
 });
 

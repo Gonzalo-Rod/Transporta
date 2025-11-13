@@ -25,9 +25,9 @@ const SearchLocation = ({ placeholder, onLocationSelect }) => {
 
     try {
       const response = await fetch(
-        `https://proyecto-is-google-api.vercel.app/google-maps/search?query=${encodeURIComponent(
-          text
-        )}`
+          `https://proyecto-is-google-api.vercel.app/google-maps/search?query=${encodeURIComponent(
+              text,
+          )}`,
       );
       const data = await response.json();
       if (data.status === 'OK') {
@@ -92,19 +92,38 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     position: 'relative',
   },
-  inputRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F4F4F4',
-    paddingHorizontal: 10,
-    paddingVertical: 15,
-    borderRadius: 8,
+  flatList: {
+    flexGrow: 0, // Evita que la lista ocupe más espacio del necesario
   },
   input: {
-    marginLeft: 10,
-    fontSize: 16,
     color: '#333',
     flex: 1,
+    fontSize: 16,
+    marginLeft: 10,
+  },
+  inputRow: {
+    alignItems: 'center',
+    backgroundColor: '#F4F4F4',
+    borderRadius: 8,
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+  },
+  suggestionItem: {
+    borderBottomColor: '#E0E0E0',
+    borderBottomWidth: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+  },
+  suggestionSubText: {
+    color: '#A5A5A5',
+    fontSize: 14,
+    marginTop: 3,
+  },
+  suggestionText: {
+    color: '#333',
+    fontSize: 16,
+    fontWeight: '500',
   },
   suggestionsContainer: {
     position: 'absolute',
@@ -121,25 +140,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 4, // Más sutil para el efecto de levitación
     shadowRadius: 10, // Sombra más difusa
     elevation: 10, // Para Android
-  },
-  flatList: {
-    flexGrow: 0, // Evita que la lista ocupe más espacio del necesario
-  },
-  suggestionItem: {
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
-  },
-  suggestionText: {
-    fontSize: 16,
-    color: '#333',
-    fontWeight: '500',
-  },
-  suggestionSubText: {
-    fontSize: 14,
-    color: '#A5A5A5',
-    marginTop: 3,
   },
 });
 
