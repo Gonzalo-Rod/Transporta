@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import axios from "axios";
+import axios from 'axios';
 
-const url = "https://swgopvgvf5.execute-api.us-east-1.amazonaws.com/dev/get-vehiculos";
+const url = 'https://swgopvgvf5.execute-api.us-east-1.amazonaws.com/dev/get-vehiculos';
 const headers = {
-  "Content-Type": "application/json"
+  'Content-Type': 'application/json',
 };
 
 const exampleDrivers = [
@@ -87,7 +87,7 @@ const ContactScreen = ({ navigation }) => {
               </View>
             </TouchableOpacity>
           )}
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
         />
 
@@ -114,7 +114,7 @@ const ContactScreen = ({ navigation }) => {
               </View>
             </TouchableOpacity>
           )}
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
         />
 
@@ -141,7 +141,7 @@ const ContactScreen = ({ navigation }) => {
               </View>
             </TouchableOpacity>
           )}
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
         />
 
@@ -164,7 +164,7 @@ const ContactScreen = ({ navigation }) => {
               </View>
             </TouchableOpacity>
           )}
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
         />
       </View>
@@ -173,19 +173,19 @@ const ContactScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: 'white' },
-  container: { padding: 16, flex: 1 },
-  sectionHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
-  sectionTitle: { fontSize: 18, fontWeight: 'bold' },
+  cargas: { height: 60, marginBottom: 5, marginTop: 20, width: 60 },
   carouselItem: { alignItems: 'center', marginHorizontal: 15 },
-  iconImage: { width: 80, height: 80, marginBottom: 5 },
-  cargas: { width: 60, height: 60, marginBottom: 5, marginTop: 20 },
-  carouselText: { fontSize: 14, color: '#000' },
-  companyLetter: { fontSize: 60, fontWeight: 'bold', color: '#AAC1C8' },
-  itemContainer: { alignItems: 'center', marginHorizontal: 15 },
-  driverImage: { width: 80, height: 80, borderRadius: 40, marginBottom: 5 },
+  carouselText: { color: '#000', fontSize: 14 },
+  companyLetter: { color: '#AAC1C8', fontSize: 60, fontWeight: 'bold' },
+  container: { flex: 1, padding: 16 },
+  driverImage: { borderRadius: 40, height: 80, marginBottom: 5, width: 80 },
   driverName: { fontSize: 14, fontWeight: 'bold' },
-  vehicleType: { fontSize: 12, color: '#888' },
+  iconImage: { height: 80, marginBottom: 5, width: 80 },
+  itemContainer: { alignItems: 'center', marginHorizontal: 15 },
+  safeArea: { backgroundColor: 'white', flex: 1 },
+  sectionHeader: { alignItems: 'center', flexDirection: 'row', marginBottom: 10 },
+  sectionTitle: { fontSize: 18, fontWeight: 'bold' },
+  vehicleType: { color: '#888', fontSize: 12 },
 });
 
 export default ContactScreen;

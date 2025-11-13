@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -42,7 +42,7 @@ const DriverProfile = ({ navigation, route }) => {
         >
           <Ionicons name="chatbox" size={20} color="#6B9AC4" />
           <Text style={styles.buttonText}>Contacto</Text>
-        </TouchableOpacity> 
+        </TouchableOpacity>
         <TouchableOpacity
           testID="driver-profile-reserve"
           style={styles.button}
@@ -77,109 +77,109 @@ const DriverProfile = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
+  button: {
+    alignItems: 'center',
     backgroundColor: 'white',
+    borderColor: '#E5E5E5',
+    borderRadius: 8,
+    borderWidth: 1,
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'center',
+    marginHorizontal: 5,
+    padding: 16,
+  },
+  buttonText: {
+    color: '#333',
+    fontSize: 18,
+    marginLeft: 5,
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.03,
+    shadowRadius: 5,
+  },
+  driverImage: {
+    borderRadius: 50,
+    height: 90,
+    marginRight: 10,
+    width: 90,
+  },
+  driverName: {
+    color: '#333',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  generalInfo: {
+    paddingHorizontal: 30,
   },
   headerContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    borderBottomColor: '#E5E5E5',
+    flexDirection: 'row',
     paddingHorizontal: 16,
     paddingVertical: 10,
-    borderBottomColor: '#E5E5E5',
   },
   headerTitle: {
+    color: '#333',
     fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 115,
-    color: '#333',
   },
-  profileContainer: {
+  infoLabel: {
+    color: '#555',
+    fontSize: 16,
+  },
+  infoRow: {
+    borderBottomColor: '#6B9AC4',
+    borderBottomWidth: 0.5,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingVertical: 16,
+  },
+  infoTitle: {
+    color: '#333',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginVertical: 10,
+  },
+  infoValue: {
+    color: '#333',
+    fontSize: 16,
+  },
+  profileContainer: {
     alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 20,
   },
   profileDetails: {
     flexDirection: 'column',
   },
-  driverName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-  },
   ratingContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    alignSelf: 'flex-start',
     backgroundColor: '#6B9AC4',
-    paddingVertical: 7,
-    paddingHorizontal: 9,
     borderRadius: 14,
+    flexDirection: 'row',
     marginTop: 5,
-    alignSelf: 'flex-start', 
+    paddingHorizontal: 9,
+    paddingVertical: 7,
   },
   ratingText: {
-    fontSize: 14,
     color: 'white',
+    fontSize: 14,
     marginLeft: 5,
   },
-  driverImage: {
-    width: 90,
-    height: 90,
-    borderRadius: 50,
-    marginRight: 10,
-  },
-  buttonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-    shadowColor: '#000',
-    shadowOpacity: 0.03,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 5,
-  },
-  button: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  safeArea: {
     backgroundColor: 'white',
-    padding: 16,
-    borderColor: '#E5E5E5',
-    borderWidth: 1,
-    borderRadius: 8,
     flex: 1,
-    justifyContent: 'center',
-    marginHorizontal: 5,
-  },
-  buttonText: {
-    fontSize: 18,
-    color: '#333',
-    marginLeft: 5,
-  },
-  generalInfo: {
-    paddingHorizontal: 30,
-  },
-  infoTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginVertical: 10,
-    color: '#333',
-  },
-  infoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 16,
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#6B9AC4',
-  },
-  infoLabel: {
-    fontSize: 16,
-    color: '#555',
-  },
-  infoValue: {
-    fontSize: 16,
-    color: '#333',
   },
 });
 

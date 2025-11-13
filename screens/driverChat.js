@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, SafeArea
 import { Ionicons } from '@expo/vector-icons';
 
 const Chat = ({ navigation, route }) => {
-  const { driverName } = route.params; 
+  const { driverName } = route.params;
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([
     { id: '1', text: 'Hola queria hacer una reserva con usted para mover algunas cosas de mi casa', sender: 'user' },
@@ -45,7 +45,7 @@ const Chat = ({ navigation, route }) => {
           </TouchableOpacity>
           <Text style={styles.headerTitle}>{driverName}</Text>
         </View>
-        
+
         <FlatList
           data={messages}
           renderItem={renderMessage}
@@ -70,60 +70,60 @@ const Chat = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: 'white',
+  driverMessage: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#E5E5E5',
   },
   headerContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    borderBottomColor: '#E5E5E5',
+    flexDirection: 'row',
     paddingHorizontal: 16,
     paddingVertical: 10,
-    borderBottomColor: '#E5E5E5',
   },
   headerTitle: {
+    color: '#333',
     fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 116,
-    color: '#333',
   },
-  messagesContainer: {
-    paddingHorizontal: 16,
+  input: {
+    backgroundColor: '#F5F5F5',
+    borderRadius: 20,
+    flex: 1,
+    fontSize: 16,
+    marginRight: 10,
+    paddingHorizontal: 15,
     paddingVertical: 10,
-    flexGrow: 1,
+  },
+  inputContainer: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderTopColor: '#E5E5E5',
+    flexDirection: 'row',
+    paddingHorizontal: 10,
   },
   messageBubble: {
-    maxWidth: '75%',
-    padding: 10,
     borderRadius: 8,
     marginVertical: 5,
-  },
-  userMessage: {
-    backgroundColor: '#6B9AC4',
-    alignSelf: 'flex-end',
-  },
-  driverMessage: {
-    backgroundColor: '#E5E5E5',
-    alignSelf: 'flex-start',
+    maxWidth: '75%',
+    padding: 10,
   },
   messageText: {
     color: '#333',
   },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    borderTopColor: '#E5E5E5',
-    backgroundColor: 'white',
-  },
-  input: {
-    flex: 1,
-    backgroundColor: '#F5F5F5',
-    borderRadius: 20,
+  messagesContainer: {
+    flexGrow: 1,
+    paddingHorizontal: 16,
     paddingVertical: 10,
-    paddingHorizontal: 15,
-    marginRight: 10,
-    fontSize: 16,
+  },
+  safeArea: {
+    backgroundColor: 'white',
+    flex: 1,
+  },
+  userMessage: {
+    alignSelf: 'flex-end',
+    backgroundColor: '#6B9AC4',
   },
 });
 

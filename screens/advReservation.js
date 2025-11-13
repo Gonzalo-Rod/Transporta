@@ -5,267 +5,269 @@ import { Ionicons } from '@expo/vector-icons';
 import SearchLocation from '../components/Inputs/searchLocation';
 
 const { width } = Dimensions.get('window');
-const url = "https://swgopvgvf5.execute-api.us-east-1.amazonaws.com/dev/reserva";
+const url = 'https://swgopvgvf5.execute-api.us-east-1.amazonaws.com/dev/reserva';
 const headers = {
-	"Content-Type":"application/json"
-}
-import { getUser,getToken } from "../utils/Auth";
-import axios from "axios";
+  'Content-Type': 'application/json',
+};
+import { getUser, getToken } from '../utils/Auth';
+import axios from 'axios';
 
 const AdvReservation = ({ navigation, route }) => {
   const { driverData } = route.params;
 
-	const [user,setUser] = useState();
-	const [token,setToken] = useState();
-	const [inicio,setInicio] = useState();
-	const [llegada,setLlegada] = useState();
-	const [fecha,setFecha] = useState();
-	const [hora,setHora] = useState();
-	const [precio,setPrecio] = useState();
-	const [comentarios,setComentarios] = useState();
-	const [duracion,setDuracion] = useState();
+  const [user, setUser] = useState();
+  const [token, setToken] = useState();
+  const [inicio, setInicio] = useState();
+  const [llegada, setLlegada] = useState();
+  const [fecha, setFecha] = useState();
+  const [hora, setHora] = useState();
+  const [precio, setPrecio] = useState();
+  const [comentarios, setComentarios] = useState();
+  const [duracion, setDuracion] = useState();
 
-	const test = () => {
-		(async () => {
-			const useR = await getUser();
-			const tokeN = await getToken();
-			setUser(useR);
-			setToken(tokeN);
-		})();
-	}
-	useEffect(() => {test();},[]);
+  const test = () => {
+    (async () => {
+      const useR = await getUser();
+      const tokeN = await getToken();
+      setUser(useR);
+      setToken(tokeN);
+    })();
+  };
+  useEffect(() => {
+    test();
+  }, []);
 
   const obtenerDireccionesGoogleMaps = async () => {
   	const baseURL = 'https://proyecto-is-google-api.vercel.app/google-maps/directions';
     try {
-			const response = await axios.get(baseURL, {
+      const response = await axios.get(baseURL, {
       	params: {
         	origin: inicio,
-          destination: llegada
-        }
+          destination: llegada,
+        },
       });
-			const distancia = response.data.routes[0]?.legs[0]?.distance?.value || 0; 
-      const duracion  = response.data.routes[0]?.legs[0]?.duration?.value || 0;
-			
-			const tipo_transporte = 10;
-			const tipo_carga = 20;
+      const distancia = response.data.routes[0]?.legs[0]?.distance?.value || 0;
+      const duracion = response.data.routes[0]?.legs[0]?.duration?.value || 0;
 
-			const dur = duracion/60
-			const precioCalculado = (distancia/1000 * 2) + tipo_transporte + tipo_carga;
-			console.log(precioCalculado);
+      const tipo_transporte = 10;
+      const tipo_carga = 20;
+
+      const dur = duracion/60;
+      const precioCalculado = (distancia/1000 * 2) + tipo_transporte + tipo_carga;
+      console.log(precioCalculado);
       setPrecio(precioCalculado.toFixed(1));
-			setDuracion(dur.toFixed(1));
+      setDuracion(dur.toFixed(1));
     } catch (error) {
-			console.log("Error obteniendo direcciones:", error.message);
-		}
+      console.log('Error obteniendo direcciones:', error.message);
+    }
   };
 
 
   useEffect(() => {
   	if (inicio && llegada) {
-			obtenerDireccionesGoogleMaps();
-		}
+      obtenerDireccionesGoogleMaps();
+    }
   }, [inicio, llegada]);
 
 
-	const create_reservaHandler = async () => {
-		try {
-			const info = {
-				correo_user: user,
-				correo_driver: driverData.mail, // se debe pasar por route params
-				telefono_driver: driverData.phone, // esto tambien
-				inicio,
-				llegada,
-				metodo_de_pago: "yape", // el json con las opciones disponibles se debe pasar por route params
-				placa: driverData.plate, // route params
-				fecha,
-				hora,
-				precio,
-				comentarios: comentarios ?? "",
-				token,
-				duracion
-			};
-			const response = await axios.post(url, info, { headers });
-			console.log('reserva response', response.data ?? response.status);
-			return true;
-		} catch (error) { console.log(error); }
-
-	};
-
+  const create_reservaHandler = async () => {
+    try {
+      const info = {
+        correo_user: user,
+        correo_driver: driverData.mail, // se debe pasar por route params
+        telefono_driver: driverData.phone, // esto tambien
+        inicio,
+        llegada,
+        metodo_de_pago: 'yape', // el json con las opciones disponibles se debe pasar por route params
+        placa: driverData.plate, // route params
+        fecha,
+        hora,
+        precio,
+        comentarios: comentarios ?? '',
+        token,
+        duracion,
+      };
+      const response = await axios.post(url, info, { headers });
+      console.log('reserva response', response.data ?? response.status);
+      return true;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 
   return (
     <SafeAreaView style={styles.safeArea}>
-        <View style={styles.headerContainer}>
-          <TouchableOpacity testID="adv-reservation-back" onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back" size={24} color="#6B9AC4" />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Datos de reserva</Text>
-        </View>
+      <View style={styles.headerContainer}>
+        <TouchableOpacity testID="adv-reservation-back" onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="#6B9AC4" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Datos de reserva</Text>
+      </View>
 
-        <View style={styles.formContainer}>
+      <View style={styles.formContainer}>
         <SearchLocation
-        placeholder="Buscar partida"
-        onLocationSelect={(location) => {
-          console.log('Ubicación seleccionada:', location);
-          setInicio(location);
-        }}
-      />
-
-        <SearchLocation
-        placeholder="Buscar destino"
-        onLocationSelect={(location) => {
-          console.log('Ubicación seleccionada:', location);
-          setLlegada(location);
+          placeholder="Buscar partida"
+          onLocationSelect={(location) => {
+            console.log('Ubicación seleccionada:', location);
+            setInicio(location);
           }}
         />
 
-          <View style={styles.row}>
-            <View style={[styles.inputRow, styles.smallInput]}>
-              <Ionicons name="calendar" size={18} color="#A5A5A5" />
-              <TextInput
-                placeholder="Fecha"
-                style={styles.input}
-                value={fecha}
-                onChangeText={setFecha}
-              />
-            </View>
-            <View style={[styles.inputRow, styles.smallInput]}>
-              <Ionicons name="alarm" size={18} color="#A5A5A5" />
-              <TextInput
-                placeholder="Hora"
-                style={styles.input}
-                value={hora}
-                onChangeText={setHora}
-              />
-            </View>
-          </View>
+        <SearchLocation
+          placeholder="Buscar destino"
+          onLocationSelect={(location) => {
+            console.log('Ubicación seleccionada:', location);
+            setLlegada(location);
+          }}
+        />
 
-          <View style={styles.notesContainer}>
-            <Ionicons name="document-text" size={18} color="#A5A5A5" style={styles.notesIcon} />
+        <View style={styles.row}>
+          <View style={[styles.inputRow, styles.smallInput]}>
+            <Ionicons name="calendar" size={18} color="#A5A5A5" />
             <TextInput
-							onChangeText={setComentarios}
-							value={comentarios}
-              placeholder="Notas"
-              style={[styles.input, styles.notesInput]}
-              multiline
+              placeholder="Fecha"
+              style={styles.input}
+              value={fecha}
+              onChangeText={setFecha}
+            />
+          </View>
+          <View style={[styles.inputRow, styles.smallInput]}>
+            <Ionicons name="alarm" size={18} color="#A5A5A5" />
+            <TextInput
+              placeholder="Hora"
+              style={styles.input}
+              value={hora}
+              onChangeText={setHora}
             />
           </View>
         </View>
 
-        <View style={styles.priceContainer}>
-          <Text style={styles.priceLabel}>Precio Sugerido</Text>
-          <Text style={styles.price}>S/. {precio}</Text>
+        <View style={styles.notesContainer}>
+          <Ionicons name="document-text" size={18} color="#A5A5A5" style={styles.notesIcon} />
+          <TextInput
+            onChangeText={setComentarios}
+            value={comentarios}
+            placeholder="Notas"
+            style={[styles.input, styles.notesInput]}
+            multiline
+          />
         </View>
+      </View>
 
-        <TouchableOpacity
-          style={styles.submitButton}
-          onPress={async () => {
-            const reserva_valida = await create_reservaHandler();
-						if(reserva_valida){
-							navigation.navigate('AdvConfirmation', {
+      <View style={styles.priceContainer}>
+        <Text style={styles.priceLabel}>Precio Sugerido</Text>
+        <Text style={styles.price}>S/. {precio}</Text>
+      </View>
+
+      <TouchableOpacity
+        style={styles.submitButton}
+        onPress={async () => {
+          const reserva_valida = await create_reservaHandler();
+          if (reserva_valida) {
+            navigation.navigate('AdvConfirmation', {
               	originAddress: inicio,
               	destinationAddress: llegada,
               	date: fecha,
               	time: hora,
             	});
-						}
-          }}
-        >
-          <Text style={styles.submitButtonText}>Solicitar Reserva</Text>
-        </TouchableOpacity>
+          }
+        }}
+      >
+        <Text style={styles.submitButtonText}>Solicitar Reserva</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#fff',
+  formContainer: {
+    marginBottom: 120,
+    paddingHorizontal: 20,
   },
   headerContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    borderBottomColor: '#E5E5E5',
+    flexDirection: 'row',
+    marginBottom: 20,
     paddingHorizontal: 16,
     paddingVertical: 10,
-    borderBottomColor: '#E5E5E5',
-    marginBottom: 20,
   },
   headerTitle: {
+    color: '#333',
     fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 97,
-    color: '#333',
-  },
-  formContainer: {
-    paddingHorizontal: 20,
-    marginBottom: 120,
-  },
-  inputRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F4F4F4',
-    paddingHorizontal: 10,
-    paddingVertical: 15,
-    borderRadius: 8,
-    marginBottom: 15,
   },
   input: {
-    marginLeft: 10,
-    fontSize: 16,
     color: '#333',
     flex: 1,
+    fontSize: 16,
+    marginLeft: 10,
   },
-  notesContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+  inputRow: {
+    alignItems: 'center',
     backgroundColor: '#F4F4F4',
+    borderRadius: 8,
+    flexDirection: 'row',
+    marginBottom: 15,
     paddingHorizontal: 10,
     paddingVertical: 15,
+  },
+  notesContainer: {
+    alignItems: 'flex-start',
+    backgroundColor: '#F4F4F4',
     borderRadius: 8,
+    flexDirection: 'row',
     marginBottom: 15,
+    paddingHorizontal: 10,
+    paddingVertical: 15,
   },
   notesIcon: {
     marginTop: 5,
   },
   notesInput: {
-    height: 180,
-    textAlignVertical: 'top',
-    marginLeft: 10,
     flex: 1,
+    height: 180,
+    marginLeft: 10,
+    textAlignVertical: 'top',
+  },
+  price: {
+    color: '#6B9AC4',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  priceContainer: {
+    borderTopColor: '#6B9AC4',
+    borderTopWidth: 0.5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+    paddingHorizontal: 23,
+    paddingVertical: 20,
+  },
+  priceLabel: {
+    color: '#333',
+    fontSize: 16,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  safeArea: {
+    backgroundColor: '#fff',
+    flex: 1,
+  },
   smallInput: {
     flex: 1,
     marginRight: 10,
   },
-  priceContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 23,
-    paddingVertical: 20,
-    borderTopWidth: 0.5,
-    borderTopColor: '#6B9AC4',
-    marginTop: 20,
-  },
-  priceLabel: {
-    fontSize: 16,
-    color: '#333',
-  },
-  price: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#6B9AC4',
-  },
   submitButton: {
     backgroundColor: '#6B9AC4',
-    paddingVertical: 15,
     borderRadius: 8,
-    marginHorizontal: 20,
     marginBottom: 30,
+    marginHorizontal: 20,
+    paddingVertical: 15,
   },
   submitButtonText: {
     color: '#fff',
@@ -273,7 +275,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
 
 
 export default AdvReservation;

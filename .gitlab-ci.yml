@@ -14,11 +14,12 @@
   - if: "$CI_COMMIT_BRANCH =~ $DEV_BRANCH_REGEX || $CI_COMMIT_BRANCH =~ $QA_BRANCH_REGEX"
 
 stages:
+  - google_code_style
   - frontend_build
   - backend_build
   - api_install
   - api_lint
-  - quality
+  - sonar
   - api_test
   - backend_test
 
@@ -45,6 +46,32 @@ frontend_tests:
       - coverage/lcov.info
     expire_in: 1 day
   rules: *default_rules
+
+frontend_lint:
+  image: node:18
+  stage: google_code_style
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+  script:
+    - npm ci --prefer-offline
+    - mkdir -p reports
+    - LINT_EXIT=0
+    - npm run lint -- --format junit --output-file reports/eslint-report.xml || LINT_EXIT=$?
+    - |
+      if [ "$LINT_EXIT" -ne 0 ]; then
+        echo "Lint issues found. Review reports/eslint-report.xml for details."
+      else
+        echo "Lint completed with no errors."
+      fi
+  artifacts:
+    when: always
+    paths:
+      - reports/eslint-report.xml
+    reports:
+      junit: reports/eslint-report.xml
+  rules: *dev_only_rules
 
 backend_tests:
   image:
@@ -128,7 +155,7 @@ sonarqube_scan:
   image:
     name: sonarsource/sonar-scanner-cli:latest
     entrypoint: [""]
-  stage: quality
+  stage: sonar
   needs:
     - frontend_tests
   script:

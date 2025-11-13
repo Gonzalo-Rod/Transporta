@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from "react";
-import PropTypes from "prop-types";
+import React, { useMemo, useState } from 'react';
+import PropTypes from 'prop-types';
 import {
   FlatList,
   Image,
@@ -7,7 +7,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from "react-native";
+} from 'react-native';
 
 const VehicleSelectionList = ({
   vehicles,
@@ -17,15 +17,15 @@ const VehicleSelectionList = ({
   cardTestIDPrefix,
 }) => {
   const defaultSelected = useMemo(
-    () => initialSelectedId ?? (vehicles[0] ? vehicles[0].id : null),
-    [initialSelectedId, vehicles]
+      () => initialSelectedId ?? (vehicles[0] ? vehicles[0].id : null),
+      [initialSelectedId, vehicles],
   );
 
   const [selectedId, setSelectedId] = useState(defaultSelected);
 
   const selectedVehicle = useMemo(
-    () => vehicles.find((vehicle) => vehicle.id === selectedId) ?? null,
-    [selectedId, vehicles]
+      () => vehicles.find((vehicle) => vehicle.id === selectedId) ?? null,
+      [selectedId, vehicles],
   );
 
   const handleSelect = (vehicle) => {
@@ -75,69 +75,69 @@ const VehicleSelectionList = ({
 };
 
 const styles = StyleSheet.create({
-  listContainer: {
-    padding: 10,
-    marginTop: 5,
-  },
   card: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 15,
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
     borderRadius: 10,
-    backgroundColor: "#FFFFFF",
-    shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
     elevation: 3,
-    marginVertical: 9,
+    flexDirection: 'row',
     marginHorizontal: 10,
-  },
-  selectedCard: {
-    borderWidth: 2,
-    borderColor: "#6B9AC4",
-  },
-  leftContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    flex: 1,
-  },
-  vehicleImage: {
-    width: 60,
-    height: 60,
-    marginRight: 15,
-  },
-  vehicleName: {
-    fontSize: 18,
-    fontWeight: "500",
-    color: "#6B9AC4",
-  },
-  vehicleInfo: {
-    fontSize: 14,
-    color: "#666",
-  },
-  rightContainer: {
-    borderLeftWidth: 1,
-    borderLeftColor: "#6B9AC4",
-    paddingLeft: 15,
-  },
-  priceText: {
-    fontSize: 20,
-    fontWeight: "400",
-    color: "#333",
+    marginVertical: 9,
+    padding: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
   continueButton: {
-    backgroundColor: "#6B9AC4",
-    paddingVertical: 15,
+    alignItems: 'center',
+    backgroundColor: '#6B9AC4',
     borderRadius: 8,
-    alignItems: "center",
     marginBottom: 40,
     marginHorizontal: 20,
+    paddingVertical: 15,
   },
   continueButtonText: {
-    color: "white",
+    color: 'white',
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
+  },
+  leftContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    flex: 1,
+  },
+  listContainer: {
+    marginTop: 5,
+    padding: 10,
+  },
+  priceText: {
+    color: '#333',
+    fontSize: 20,
+    fontWeight: '400',
+  },
+  rightContainer: {
+    borderLeftColor: '#6B9AC4',
+    borderLeftWidth: 1,
+    paddingLeft: 15,
+  },
+  selectedCard: {
+    borderColor: '#6B9AC4',
+    borderWidth: 2,
+  },
+  vehicleImage: {
+    height: 60,
+    marginRight: 15,
+    width: 60,
+  },
+  vehicleInfo: {
+    color: '#666',
+    fontSize: 14,
+  },
+  vehicleName: {
+    color: '#6B9AC4',
+    fontSize: 18,
+    fontWeight: '500',
   },
 });
 
@@ -145,14 +145,14 @@ export default VehicleSelectionList;
 
 VehicleSelectionList.propTypes = {
   vehicles: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      time: PropTypes.string.isRequired,
-      dimension: PropTypes.string.isRequired,
-      price: PropTypes.number.isRequired,
-      image: PropTypes.oneOfType([PropTypes.number, PropTypes.object]).isRequired,
-    })
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        time: PropTypes.string.isRequired,
+        dimension: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        image: PropTypes.oneOfType([PropTypes.number, PropTypes.object]).isRequired,
+      }),
   ).isRequired,
   initialSelectedId: PropTypes.string,
   onContinue: PropTypes.func.isRequired,
@@ -162,5 +162,5 @@ VehicleSelectionList.propTypes = {
 
 VehicleSelectionList.defaultProps = {
   initialSelectedId: undefined,
-  cardTestIDPrefix: "vehicle-card",
+  cardTestIDPrefix: 'vehicle-card',
 };

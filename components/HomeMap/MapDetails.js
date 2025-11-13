@@ -6,8 +6,8 @@ import MapView, { Marker, Polyline } from 'react-native-maps';
 const MapDetails = () => {
   const route = useRoute();
   const { inicio, llegada } = route.params;
-  console.log(inicio)
-  console.log(llegada)
+  console.log(inicio);
+  console.log(llegada);
 
   const [originCoords, setOriginCoords] = useState(null);
   const [destinationCoords, setDestinationCoords] = useState(null);
@@ -19,9 +19,9 @@ const MapDetails = () => {
   const fetchCoordinates = async (address) => {
     try {
       const response = await fetch(
-        `https://proyecto-is-google-api.vercel.app/google-maps/coordinates?address=${encodeURIComponent(
-          address
-        )}`
+          `https://proyecto-is-google-api.vercel.app/google-maps/coordinates?address=${encodeURIComponent(
+              address,
+          )}`,
       );
       const data = await response.json();
       return { latitude: data.lat, longitude: data.lng };
@@ -39,7 +39,7 @@ const MapDetails = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `https://proyecto-is-google-api.vercel.app/google-maps/directions?origin=${originCoords.latitude},${originCoords.longitude}&destination=${destinationCoords.latitude},${destinationCoords.longitude}`
+          `https://proyecto-is-google-api.vercel.app/google-maps/directions?origin=${originCoords.latitude},${originCoords.longitude}&destination=${destinationCoords.latitude},${destinationCoords.longitude}`,
       );
       const data = await response.json();
 
@@ -68,7 +68,7 @@ const MapDetails = () => {
 
   // Decodificador de polyline
   const decodePolyline = (t) => {
-    let points = [];
+    const points = [];
     let index = 0;
     const len = t.length;
     let lat = 0;
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   map: {
-    width: '100%',
     height: '100%',
+    width: '100%',
   },
 });
