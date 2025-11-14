@@ -1,9 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, SafeAreaView } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const { width, height } = Dimensions.get('window');
+const COLORS = {
+  primary: '#6B9AC4',
+  textPrimary: '#333333',
+  white: '#FFFFFF',
+  detailBackground: '#E2ECF4',
+};
 
 const AdvConfirmation = ({ navigation, route }) => {
   const { originAddress, destinationAddress, date, time } = route.params;
@@ -13,7 +24,7 @@ const AdvConfirmation = ({ navigation, route }) => {
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <TouchableOpacity testID="adv-back-button" onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back" size={24} color="#6B9AC4" />
+            <Ionicons name="arrow-back" size={24} color={COLORS.primary} />
           </TouchableOpacity>
         </View>
 
@@ -25,7 +36,7 @@ const AdvConfirmation = ({ navigation, route }) => {
           </Text>
 
           <View style={styles.addressRow}>
-            <Ionicons name="ellipse-outline" size={18} color="#6B9AC4" />
+            <Ionicons name="ellipse-outline" size={18} color={COLORS.primary} />
             <View style={styles.addressDetails}>
               <Text style={styles.addressText}>{originAddress}</Text>
               <Text style={styles.addressType}>Origen</Text>
@@ -33,7 +44,7 @@ const AdvConfirmation = ({ navigation, route }) => {
           </View>
 
           <View style={styles.addressRow}>
-            <Ionicons name="ellipse" size={18} color="#6B9AC4" />
+            <Ionicons name="ellipse" size={18} color={COLORS.primary} />
             <View style={styles.addressDetails}>
               <Text style={styles.addressText}>{destinationAddress}</Text>
               <Text style={styles.addressType}>Destino</Text>
@@ -63,16 +74,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   addressText: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 16,
   },
   addressType: {
-    color: '#6B9AC4',
+    color: COLORS.primary,
     fontSize: 14,
   },
   backButton: {
     alignItems: 'center',
-    backgroundColor: '#6B9AC4',
+    backgroundColor: COLORS.primary,
     borderRadius: 8,
     bottom: 75,
     left: 16,
@@ -81,16 +92,16 @@ const styles = StyleSheet.create({
     right: 16,
   },
   backButtonText: {
-    color: '#fff',
+    color: COLORS.white,
     fontSize: 16,
   },
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     flex: 1,
     padding: 16,
   },
   dateText: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 20,
@@ -98,18 +109,18 @@ const styles = StyleSheet.create({
   detailsButton: {
     alignItems: 'center',
     alignSelf: 'flex-start',
-    backgroundColor: '#6B9AC4',
+    backgroundColor: COLORS.primary,
     borderRadius: 8,
     marginTop: 10,
     paddingHorizontal: 25,
     paddingVertical: 8,
   },
   detailsButtonText: {
-    color: '#fff',
+    color: COLORS.white,
     fontSize: 14,
   },
   detailsContainer: {
-    backgroundColor: '#E2ECF4',
+    backgroundColor: COLORS.detailBackground,
     borderRadius: 10,
     marginBottom: 20,
     padding: 20,
@@ -121,14 +132,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   headerTitle: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'left',
   },
   safeArea: {
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     flex: 1,
   },
 });

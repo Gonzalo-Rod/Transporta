@@ -1,7 +1,26 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+
+const COLORS = {
+  driverMessage: '#E5E5E5',
+  border: '#E5E5E5',
+  textPrimary: '#333333',
+  inputBackground: '#F5F5F5',
+  white: '#FFFFFF',
+  userMessage: '#6B9AC4',
+};
 
 const Chat = ({ navigation, route }) => {
   const { driverName } = route.params;
@@ -41,7 +60,7 @@ const Chat = ({ navigation, route }) => {
       >
         <View style={styles.headerContainer}>
           <TouchableOpacity testID="chat-back-button" onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back" size={24} color="#6B9AC4" />
+            <Ionicons name="arrow-back" size={24} color={COLORS.userMessage} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>{driverName}</Text>
         </View>
@@ -61,7 +80,7 @@ const Chat = ({ navigation, route }) => {
             onChangeText={setMessage}
           />
           <TouchableOpacity accessibilityLabel="chat-send-button" onPress={sendMessage}>
-            <Ionicons name="send" size={24} color="#6B9AC4" />
+            <Ionicons name="send" size={24} color={COLORS.userMessage} />
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -72,23 +91,23 @@ const Chat = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   driverMessage: {
     alignSelf: 'flex-start',
-    backgroundColor: '#E5E5E5',
+    backgroundColor: COLORS.driverMessage,
   },
   headerContainer: {
     alignItems: 'center',
-    borderBottomColor: '#E5E5E5',
+    borderBottomColor: COLORS.border,
     flexDirection: 'row',
     paddingHorizontal: 16,
     paddingVertical: 10,
   },
   headerTitle: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 116,
   },
   input: {
-    backgroundColor: '#F5F5F5',
+    backgroundColor: COLORS.inputBackground,
     borderRadius: 20,
     flex: 1,
     fontSize: 16,
@@ -98,8 +117,8 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     alignItems: 'center',
-    backgroundColor: 'white',
-    borderTopColor: '#E5E5E5',
+    backgroundColor: COLORS.white,
+    borderTopColor: COLORS.border,
     flexDirection: 'row',
     paddingHorizontal: 10,
   },
@@ -110,7 +129,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   messageText: {
-    color: '#333',
+    color: COLORS.textPrimary,
   },
   messagesContainer: {
     flexGrow: 1,
@@ -118,12 +137,12 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   safeArea: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     flex: 1,
   },
   userMessage: {
     alignSelf: 'flex-end',
-    backgroundColor: '#6B9AC4',
+    backgroundColor: COLORS.userMessage,
   },
 });
 

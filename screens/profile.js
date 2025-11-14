@@ -1,21 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, SafeAreaView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  SafeAreaView,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-const { width } = Dimensions.get('window');
+import axios from 'axios';
+import { useFocusEffect } from '@react-navigation/native';
 import { getUser, getToken } from '../utils/Auth';
+
 const url = 'https://swgopvgvf5.execute-api.us-east-1.amazonaws.com/dev/get-user';
 const headers = {
   'Content-Type': 'application/json',
 };
-import axios from 'axios';
-import { useFocusEffect } from '@react-navigation/native';
+const COLORS = {
+  white: '#FFFFFF',
+  border: '#E5E5E5',
+  textPrimary: '#333333',
+  textSecondary: '#555555',
+  accent: '#6B9AC4',
+  shadow: '#000000',
+  logout: '#D9534F',
+  role: 'gray',
+};
 
 
 const UserProfile = ({ navigation }) => {
   const [user, setUser] = useState('');
   const [token, setToken] = useState('');
-  const [user_data, setUser_data] = useState('');
+  const [userData, setUserData] = useState('');
 
   const test = () => {
     (async () => {
@@ -45,7 +62,7 @@ const UserProfile = ({ navigation }) => {
       }
       const userData = payload?.response;
       if (userData) {
-        setUser_data(userData);
+        setUserData(userData);
         console.log(userData);
       }
     } catch (error) {
@@ -67,14 +84,14 @@ const UserProfile = ({ navigation }) => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.headerContainer}>
         <TouchableOpacity testID="profile-back" onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#6B9AC4" />
+          <Ionicons name="arrow-back" size={24} color={COLORS.accent} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Tu Perfil</Text>
       </View>
 
       <View style={styles.profileContainer}>
         <View style={styles.profileDetails}>
-          <Text style={styles.userName}>{user_data?.nombre?.S ||'Cargando...'} {user_data?.apellido?.S}</Text>
+          <Text style={styles.userName}>{userData?.nombre?.S || 'Cargando...'} {userData?.apellido?.S}</Text>
           <Text style={styles.userRole}>{'User'}</Text>
         </View>
         <Image source={{ uri: 'https://via.placeholder.com/100' }} style={styles.userImage} />
@@ -86,15 +103,15 @@ const UserProfile = ({ navigation }) => {
           style={styles.button}
           onPress={() => navigation.navigate('Activity')}
         >
-          <Ionicons name="notifications-outline" size={20} color="#6B9AC4" />
+          <Ionicons name="notifications-outline" size={20} color={COLORS.accent} />
           <Text style={styles.buttonText}>Actividad</Text>
         </TouchableOpacity>
         <TouchableOpacity
           testID="profile-payment"
           style={styles.button}
-          onPress={() => navigation.navigate('PaymentInfo', { user_data: user_data?.metodo_de_pago?.S })}
+          onPress={() => navigation.navigate('PaymentInfo', { user_data: userData?.metodo_de_pago?.S })}
         >
-          <Ionicons name="card-outline" size={20} color="#6B9AC4" />
+          <Ionicons name="card-outline" size={20} color={COLORS.accent} />
           <Text style={styles.buttonText}>Pago</Text>
         </TouchableOpacity>
       </View>
@@ -103,15 +120,17 @@ const UserProfile = ({ navigation }) => {
         <Text style={styles.infoTitle}>Datos personales</Text>
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Nombre</Text>
-          <Text style={styles.infoValue}>{`${user_data?.nombre?.S ?? ''} ${user_data?.apellido?.S ?? ''}`.trim() || 'Cargando...'}</Text>
+          <Text style={styles.infoValue}>
+            {`${userData?.nombre?.S ?? ''} ${userData?.apellido?.S ?? ''}`.trim() || 'Cargando...'}
+          </Text>
         </View>
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Celular</Text>
-          <Text style={styles.infoValue}>{user_data?.telefono?.S || 'Cargando...'}</Text>
+          <Text style={styles.infoValue}>{userData?.telefono?.S || 'Cargando...'}</Text>
         </View>
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Email</Text>
-          <Text style={styles.infoValue}>{user_data?.correo?.S || 'Cargando...'}</Text>
+          <Text style={styles.infoValue}>{userData?.correo?.S || 'Cargando...'}</Text>
         </View>
       </View>
 
@@ -130,8 +149,8 @@ const UserProfile = ({ navigation }) => {
 const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
-    backgroundColor: 'white',
-    borderColor: '#E5E5E5',
+    backgroundColor: COLORS.white,
+    borderColor: COLORS.border,
     borderRadius: 8,
     borderWidth: 1,
     flexDirection: 'row',
@@ -141,7 +160,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   buttonText: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 18,
     marginLeft: 5,
   },
@@ -150,7 +169,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     paddingHorizontal: 20,
     paddingVertical: 20,
-    shadowColor: '#000',
+    shadowColor: COLORS.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.03,
     shadowRadius: 5,
@@ -160,48 +179,48 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     alignItems: 'center',
-    borderBottomColor: '#E5E5E5',
+    borderBottomColor: COLORS.border,
     flexDirection: 'row',
     paddingHorizontal: 16,
     paddingVertical: 10,
   },
   headerTitle: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 136,
   },
   infoLabel: {
-    color: '#555',
+    color: COLORS.textSecondary,
     fontSize: 16,
   },
   infoRow: {
-    borderBottomColor: '#6B9AC4',
+    borderBottomColor: COLORS.accent,
     borderBottomWidth: 0.5,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 16,
   },
   infoTitle: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 18,
     fontWeight: 'bold',
     marginVertical: 10,
   },
   infoValue: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 16,
   },
   logoutButton: {
     alignItems: 'center',
-    backgroundColor: '#D9534F',
+    backgroundColor: COLORS.logout,
     borderRadius: 10,
     marginHorizontal: 30,
     marginTop: 30,
     paddingVertical: 15,
   },
   logoutText: {
-    color: '#fff',
+    color: COLORS.white,
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -216,7 +235,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   safeArea: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     flex: 1,
   },
   userImage: {
@@ -226,12 +245,12 @@ const styles = StyleSheet.create({
     width: 90,
   },
   userName: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 24,
     fontWeight: 'bold',
   },
   userRole: {
-    color: 'gray',
+    color: COLORS.role,
     fontSize: 16,
     marginTop: 5,
   },

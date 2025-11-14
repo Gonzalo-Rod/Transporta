@@ -11,6 +11,15 @@ import { FontAwesome } from '@expo/vector-icons';
 import auth from '../utils/Auth';
 import axios from 'axios';
 
+const COLORS = {
+  primary: '#6B9AC4',
+  white: '#FFFFFF',
+  textPrimary: '#333333',
+  textSecondary: 'gray',
+  error: 'red',
+  border: '#CCCCCC',
+};
+
 const extractSessionData = (rawData) => {
   if (!rawData) {
     return null;
@@ -62,7 +71,7 @@ export default function LoginScreen({ navigation }) {
   const [errorMessage, setErrorMessage] = useState(null);
 
   const logIn = async () => {
-    const url_register =
+    const urlRegister =
       'https://swgopvgvf5.execute-api.us-east-1.amazonaws.com/dev/login-user';
     const headers = {
       'Content-Type': 'application/json',
@@ -71,7 +80,7 @@ export default function LoginScreen({ navigation }) {
     try {
       const payload = { correo: email, password };
 
-      const response = await axios.post(url_register, payload, { headers });
+      const response = await axios.post(urlRegister, payload, { headers });
       const sessionData = extractSessionData(response.data);
 
       if (sessionData?.token && sessionData?.user?.correo) {
@@ -91,7 +100,7 @@ export default function LoginScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-        Bienvenido a <Text style={{ color: '#6B9AC4' }}>Transporta</Text>{' '}
+        Bienvenido a <Text style={{ color: COLORS.primary }}>Transporta</Text>{' '}
       </Text>
       <Text style={styles.subtitle}>Moviliza carga rápido y seguro</Text>
 
@@ -134,7 +143,7 @@ export default function LoginScreen({ navigation }) {
 
       <TouchableOpacity onPress={() => navigation.navigate('Register')}>
         <Text style={styles.registerText}>
-          ¿No tienes cuenta? <Text style={{ color: '#6B9AC4' }}>Regístrate</Text>
+          ¿No tienes cuenta? <Text style={{ color: COLORS.primary }}>Regístrate</Text>
         </Text>
       </TouchableOpacity>
 
@@ -148,14 +157,14 @@ export default function LoginScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     flex: 1,
     justifyContent: 'center',
     padding: 20,
   },
   continueButton: {
     alignItems: 'center',
-    backgroundColor: '#6B9AC4',
+    backgroundColor: COLORS.primary,
     borderRadius: 10,
     height: 50,
     justifyContent: 'center',
@@ -163,7 +172,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   continueText: {
-    color: 'white',
+    color: COLORS.white,
     fontSize: 16,
   },
   dividerContainer: {
@@ -173,19 +182,19 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   errorText: {
-    color: 'red',
+    color: COLORS.error,
     marginBottom: 10,
     textAlign: 'center',
   },
   footerText: {
-    color: 'gray',
+    color: COLORS.textSecondary,
     fontSize: 12,
     marginHorizontal: 20,
     marginTop: 20,
     textAlign: 'center',
   },
   input: {
-    borderColor: '#ccc',
+    borderColor: COLORS.border,
     borderRadius: 10,
     borderWidth: 1,
     height: 50,
@@ -194,23 +203,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   line: {
-    backgroundColor: '#ccc',
+    backgroundColor: COLORS.border,
     flex: 1,
     height: 1,
   },
   orText: {
-    color: 'gray',
+    color: COLORS.textSecondary,
     marginHorizontal: 10,
   },
   registerText: {
-    color: 'gray',
+    color: COLORS.textSecondary,
     fontSize: 14,
     marginTop: 10,
     textAlign: 'center',
   },
   socialButton: {
     alignItems: 'center',
-    borderColor: '#ccc',
+    borderColor: COLORS.border,
     borderRadius: 10,
     borderWidth: 1,
     flexDirection: 'row',
@@ -224,7 +233,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   subtitle: {
-    color: 'gray',
+    color: COLORS.textSecondary,
     fontSize: 14,
     marginBottom: 20,
     textAlign: 'center',

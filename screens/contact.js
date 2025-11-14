@@ -15,16 +15,23 @@ const exampleDrivers = [
   { id: '4', name: 'Diego Garcia', vehicle: 'Flete', cargoType: 'Instrumentos', enterprise: 'Empresa D', image: require('../assets/ConductorTemp.png'), rating: 4.6, plate: 'OPQ123', dimensions: '6x2', availability: '7am - 3pm' },
 ];
 
+const COLORS = {
+  black: '#000000',
+  accent: '#AAC1C8',
+  white: '#FFFFFF',
+  textSecondary: '#888888',
+};
+
 const ContactScreen = ({ navigation }) => {
-  const get_vehiculos = async (parametro, valor, { shouldNavigate = true } = {}) => {
+  const getVehiculos = async (parametro, valor, { shouldNavigate = true } = {}) => {
     try {
       const hasFilter = Boolean(parametro && valor);
       const info = hasFilter ? { parametro, valor } : {};
-      console.log('get_vehiculos request payload:', info);
+      console.log('getVehiculos request payload:', info);
       const requestUrl = hasFilter
         ? `${url}?parametro=${encodeURIComponent(parametro)}&valor=${encodeURIComponent(valor)}`
         : url;
-      console.log('get_vehiculos request url:', requestUrl);
+      console.log('getVehiculos request url:', requestUrl);
       const response = await axios.get(requestUrl, { headers });
       console.log(response);
       const payload = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
@@ -40,10 +47,10 @@ const ContactScreen = ({ navigation }) => {
         navigation.navigate('Drivers', { vehiculos: responseData });
       }
     } catch (error) {
-      console.log('get_vehiculos error status:', error.response?.status);
-      console.log('get_vehiculos error data:', error.response?.data);
-      console.log('get_vehiculos error headers:', error.response?.headers);
-      console.log('get_vehiculos full error:', error);
+      console.log('getVehiculos error status:', error.response?.status);
+      console.log('getVehiculos error data:', error.response?.data);
+      console.log('getVehiculos error headers:', error.response?.headers);
+      console.log('getVehiculos full error:', error);
     }
   };
 
@@ -54,11 +61,11 @@ const ContactScreen = ({ navigation }) => {
     if (type === 'vehicle') parametro = 'tipo_transporte';
     else if (type === 'cargoType') parametro = 'tipo_carga';
     else if (type === 'enterprise') parametro = 'empresa';
-    get_vehiculos(parametro, normalizedValue);
+    getVehiculos(parametro, normalizedValue);
   };
 
   const showAllDrivers = () => {
-    get_vehiculos(undefined, undefined);
+    getVehiculos(undefined, undefined);
   };
 
   return (
@@ -175,17 +182,17 @@ const ContactScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   cargas: { height: 60, marginBottom: 5, marginTop: 20, width: 60 },
   carouselItem: { alignItems: 'center', marginHorizontal: 15 },
-  carouselText: { color: '#000', fontSize: 14 },
-  companyLetter: { color: '#AAC1C8', fontSize: 60, fontWeight: 'bold' },
+  carouselText: { color: COLORS.black, fontSize: 14 },
+  companyLetter: { color: COLORS.accent, fontSize: 60, fontWeight: 'bold' },
   container: { flex: 1, padding: 16 },
   driverImage: { borderRadius: 40, height: 80, marginBottom: 5, width: 80 },
   driverName: { fontSize: 14, fontWeight: 'bold' },
   iconImage: { height: 80, marginBottom: 5, width: 80 },
   itemContainer: { alignItems: 'center', marginHorizontal: 15 },
-  safeArea: { backgroundColor: 'white', flex: 1 },
+  safeArea: { backgroundColor: COLORS.white, flex: 1 },
   sectionHeader: { alignItems: 'center', flexDirection: 'row', marginBottom: 10 },
   sectionTitle: { fontSize: 18, fontWeight: 'bold' },
-  vehicleType: { color: '#888', fontSize: 12 },
+  vehicleType: { color: COLORS.textSecondary, fontSize: 12 },
 });
 
 export default ContactScreen;

@@ -41,6 +41,14 @@ const isValidEmail = (value) => {
   return !invalidCharacters;
 };
 
+const COLORS = {
+  primary: '#6B9AC4',
+  white: '#FFFFFF',
+  textSecondary: 'gray',
+  border: '#CCCCCC',
+  error: 'red',
+};
+
 const Register = ({ navigation }) => {
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
@@ -49,7 +57,7 @@ const Register = ({ navigation }) => {
   const [telefono, setTelefono] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const url_register = 'https://swgopvgvf5.execute-api.us-east-1.amazonaws.com/dev/register-user';
+  const urlRegister = 'https://swgopvgvf5.execute-api.us-east-1.amazonaws.com/dev/register-user';
   const headers = { 'Content-Type': 'application/json' };
 
   const validateInputs = () => {
@@ -81,7 +89,7 @@ const Register = ({ navigation }) => {
     };
 
     try {
-      const response = await axios.post(url_register, info, { headers });
+      const response = await axios.post(urlRegister, info, { headers });
       console.log('Registro exitoso:', response.data);
       Alert.alert('Registro exitoso', 'Te has registrado con éxito.');
       navigation.navigate('Login');
@@ -94,7 +102,7 @@ const Register = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-        Registrate en <Text style={{ color: '#6B9AC4' }}>Transporta</Text>
+        Registrate en <Text style={{ color: COLORS.primary }}>Transporta</Text>
       </Text>
       <Text style={styles.subtitle}>Moviliza carga rápido y seguro</Text>
 
@@ -141,7 +149,7 @@ const Register = ({ navigation }) => {
 
       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
         <Text style={styles.registerText}>
-          ¿Ya tienes cuenta? <Text style={{ color: '#6B9AC4' }}>Inicia sesión</Text>
+          ¿Ya tienes cuenta? <Text style={{ color: COLORS.primary }}>Inicia sesión</Text>
         </Text>
       </TouchableOpacity>
 
@@ -155,14 +163,14 @@ const Register = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     flex: 1,
     justifyContent: 'center',
     padding: 20,
   },
   continueButton: {
     alignItems: 'center',
-    backgroundColor: '#6B9AC4',
+    backgroundColor: COLORS.primary,
     borderRadius: 10,
     height: 50,
     justifyContent: 'center',
@@ -170,29 +178,23 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   continueText: {
-    color: 'white',
+    color: COLORS.white,
     fontSize: 16,
   },
-  dividerContainer: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginBottom: 15,
-    marginHorizontal: 20,
-  },
   errorText: {
-    color: 'red',
+    color: COLORS.error,
     marginBottom: 10,
     textAlign: 'center',
   },
   footerText: {
-    color: 'gray',
+    color: COLORS.textSecondary,
     fontSize: 12,
     marginHorizontal: 20,
     marginTop: 20,
     textAlign: 'center',
   },
   input: {
-    borderColor: '#ccc',
+    borderColor: COLORS.border,
     borderRadius: 10,
     borderWidth: 1,
     height: 50,
@@ -200,38 +202,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     paddingHorizontal: 15,
   },
-  line: {
-    backgroundColor: '#ccc',
-    flex: 1,
-    height: 1,
-  },
-  orText: {
-    color: 'gray',
-    marginHorizontal: 10,
-  },
   registerText: {
-    color: 'gray',
+    color: COLORS.textSecondary,
     fontSize: 14,
     marginTop: 10,
     textAlign: 'center',
   },
-  socialButton: {
-    alignItems: 'center',
-    borderColor: '#ccc',
-    borderRadius: 10,
-    borderWidth: 1,
-    flexDirection: 'row',
-    height: 50,
-    justifyContent: 'center',
-    marginBottom: 10,
-    marginHorizontal: 20,
-  },
-  socialText: {
-    fontSize: 16,
-    marginLeft: 10,
-  },
   subtitle: {
-    color: 'gray',
+    color: COLORS.textSecondary,
     fontSize: 14,
     marginBottom: 20,
     textAlign: 'center',

@@ -65,6 +65,7 @@ frontend_lint:
       else
         echo "Lint completed with no errors."
       fi
+    - exit $LINT_EXIT
   artifacts:
     when: always
     paths:

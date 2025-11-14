@@ -74,31 +74,40 @@ const VehicleSelectionList = ({
   );
 };
 
+const COLORS = {
+  white: '#FFFFFF',
+  black: '#000',
+  primary: '#6B9AC4',
+  priceText: '#333',
+  border: '#6B9AC4',
+  vehicleInfo: '#666',
+};
+
 const styles = StyleSheet.create({
   card: {
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.white,
     borderRadius: 10,
     elevation: 3,
     flexDirection: 'row',
     marginHorizontal: 10,
     marginVertical: 9,
     padding: 15,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
   },
   continueButton: {
     alignItems: 'center',
-    backgroundColor: '#6B9AC4',
+    backgroundColor: COLORS.primary,
     borderRadius: 8,
     marginBottom: 40,
     marginHorizontal: 20,
     paddingVertical: 15,
   },
   continueButtonText: {
-    color: 'white',
+    color: COLORS.white,
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -112,17 +121,17 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   priceText: {
-    color: '#333',
+    color: COLORS.priceText,
     fontSize: 20,
     fontWeight: '400',
   },
   rightContainer: {
-    borderLeftColor: '#6B9AC4',
+    borderLeftColor: COLORS.border,
     borderLeftWidth: 1,
     paddingLeft: 15,
   },
   selectedCard: {
-    borderColor: '#6B9AC4',
+    borderColor: COLORS.border,
     borderWidth: 2,
   },
   vehicleImage: {
@@ -131,11 +140,11 @@ const styles = StyleSheet.create({
     width: 60,
   },
   vehicleInfo: {
-    color: '#666',
+    color: COLORS.vehicleInfo,
     fontSize: 14,
   },
   vehicleName: {
-    color: '#6B9AC4',
+    color: COLORS.primary,
     fontSize: 18,
     fontWeight: '500',
   },

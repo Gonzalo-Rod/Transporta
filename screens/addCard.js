@@ -1,10 +1,26 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+  Dimensions,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const { width } = Dimensions.get('window');
+
+const COLORS = {
+  background: '#000000',
+  white: '#FFFFFF',
+  primary: '#6B9AC4',
+  textPrimary: '#333333',
+  textSecondary: '#555555',
+};
 
 const AddCreditCard = ({ navigation }) => {
   const [cardNumber, setCardNumber] = useState('');
@@ -16,7 +32,7 @@ const AddCreditCard = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <TouchableOpacity testID="back-button" onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#6B9AC4" />
+          <Ionicons name="arrow-back" size={24} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Agregar método de pago</Text>
       </View>
@@ -88,29 +104,29 @@ const styles = StyleSheet.create({
   cardContainer: {
     alignSelf: 'center',
     aspectRatio: 1.6,
-    backgroundColor: '#000',
+    backgroundColor: COLORS.background,
     borderRadius: 15,
     marginVertical: 20,
     padding: 20,
     width: width * 0.9,
   },
   cardHolder: {
-    color: '#FFF',
+    color: COLORS.white,
     fontSize: 16,
   },
   cardNumber: {
-    color: '#FFF',
+    color: COLORS.white,
     fontSize: 18,
     letterSpacing: 2,
     marginTop: 135,
   },
   container: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     flex: 1,
     paddingHorizontal: 20,
   },
   expiryDate: {
-    color: '#FFF',
+    color: COLORS.white,
     fontSize: 16,
   },
   headerContainer: {
@@ -120,24 +136,24 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   headerTitle: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 53,
   },
   infoLabel: {
-    color: '#555',
+    color: COLORS.textSecondary,
     fontSize: 16,
   },
   infoRow: {
-    borderBottomColor: '#6B9AC4',
+    borderBottomColor: COLORS.primary,
     borderBottomWidth: 0.5,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 16,
   },
   input: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 16,
     paddingVertical: 5,
     textAlign: 'right',
@@ -147,14 +163,14 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     alignItems: 'center',
-    backgroundColor: '#6B9AC4',
+    backgroundColor: COLORS.primary,
     borderRadius: 10,
     marginHorizontal: 28,
     marginTop: 190,
     paddingVertical: 15,
   },
   saveButtonText: {
-    color: 'white',
+    color: COLORS.white,
     fontSize: 16,
     fontWeight: 'bold',
   },

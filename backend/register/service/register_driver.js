@@ -55,7 +55,6 @@ async function saveDriver(driverInfo){
 			"telefono":{"S":driverInfo.telefono},
 			"nombre":{"S":driverInfo.nombre},
 			"apellido":{"S":driverInfo.apellido},
-			"telefono":{"S":driverInfo.telefono},
 			"metodo_de_pago":{
 				"M":{
 					"yape":{"S":"false"},

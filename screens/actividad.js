@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, Image, FlatList, SafeAreaView, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  FlatList,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import { getUser, getToken } from '../utils/Auth';
@@ -16,6 +24,15 @@ const headers = {
   'Content-Type': 'application/json',
 };
 
+const COLORS = {
+  primary: '#6B9AC4',
+  textPrimary: '#333333',
+  textSecondary: '#666666',
+  border: '#E5E5E5',
+  white: '#FFFFFF',
+  black: '#000000',
+};
+
 const trips = [
   { id: '1', date: 'Martes, 17 de septiembre, 20:00', address: 'Jr. Medrano Silva 165, Barranco', price: 'S/. 100', vehicle: 'Camion' },
   { id: '2', date: 'Jueves, 19 de septiembre, 20:00', address: 'Jr. Medrano Silva 165, Barranco', price: 'S/. 100', vehicle: 'Flete' },
@@ -26,19 +43,19 @@ const Activity = ({ navigation }) => {
   const [user, setUser] = useState();
   const [token, setToken] = useState();
   const test = () => {
-  	(async () => {
-    	const useR = await getUser();
-    	const tokeN = await getToken();
-    	console.log('User:', useR);
-    	console.log('Token:', tokeN);
-    	setUser(useR);
-    	setToken(tokeN);
-    	setLoading(false);
-  	})();
+    (async () => {
+      const useR = await getUser();
+      const tokeN = await getToken();
+      console.log('User:', useR);
+      console.log('Token:', tokeN);
+      setUser(useR);
+      setToken(tokeN);
+      setLoading(false);
+    })();
   };
 
   useEffect(() => {
-  	test();
+    test();
   }, []);
 
 
@@ -52,7 +69,7 @@ const Activity = ({ navigation }) => {
         valor: '-',
         token: token,
       };
-      const json_data = {
+      const jsonData = {
         httpMethod: 'GET',
         path: '/get-mis-viajes',
         body: JSON.stringify(info),
@@ -64,7 +81,7 @@ const Activity = ({ navigation }) => {
         method,
         url: url,
         headers: headers,
-        data: json_data,
+        data: jsonData,
       });
       const viajecitos = JSON.parse(response.data.body).response;
       console.log(viajecitos);
@@ -94,7 +111,7 @@ const Activity = ({ navigation }) => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.headerContainer}>
         <TouchableOpacity testID="go-back-button" onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#6B9AC4" />
+          <Ionicons name="arrow-back" size={24} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Tu Actividad</Text>
       </View>
@@ -116,37 +133,37 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   headerTitle: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 117,
   },
   safeArea: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     flex: 1,
   },
   tripAddress: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 14,
     marginTop: 5,
   },
   tripContainer: {
     alignItems: 'center',
-    backgroundColor: 'white',
-    borderColor: '#E5E5E5',
+    backgroundColor: COLORS.white,
+    borderColor: COLORS.border,
     borderRadius: 8,
     borderWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 10,
     padding: 15,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 5,
   },
   tripDate: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 14,
     fontWeight: 'bold',
   },
@@ -159,7 +176,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   tripPrice: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 14,
     fontWeight: 'bold',
     marginTop: 35,

@@ -1,9 +1,24 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Dimensions, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  SafeAreaView,
+  ScrollView,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const { width } = Dimensions.get('window');
+const COLORS = {
+  textPrimary: '#333333',
+  textSecondary: 'gray',
+  white: '#FFFFFF',
+  border: '#E5E5E5',
+  shadow: '#000000',
+  accent: '#6B9AC4',
+  type: '#1A73E8',
+};
 
 const PaymentInfo = ({ navigation }) => {
   const [selectedMethod, setSelectedMethod] = useState('visa1');
@@ -33,7 +48,7 @@ const PaymentInfo = ({ navigation }) => {
         {item.type === 'VISA' ? (
           <Text style={styles.paymentType}>{item.type}</Text>
         ) : (
-          <Ionicons name="cash-outline" size={26} color="#6B9AC4" style={styles.icon} />
+          <Ionicons name="cash-outline" size={26} color={COLORS.accent} style={styles.icon} />
         )}
         <View style={styles.paymentDetails}>
           <Text style={[styles.paymentText, item.type === 'Efectivo' && styles.efectivoText]}>
@@ -45,7 +60,7 @@ const PaymentInfo = ({ navigation }) => {
       <Ionicons
         name={selectedMethod === item.id ? 'radio-button-on' : 'radio-button-off'}
         size={20}
-        color="#6B9AC4"
+        color={COLORS.accent}
       />
     </TouchableOpacity>
   );
@@ -54,7 +69,7 @@ const PaymentInfo = ({ navigation }) => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.headerContainer}>
         <TouchableOpacity testID="payment-back" onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#6B9AC4" />
+          <Ionicons name="arrow-back" size={24} color={COLORS.accent} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Pago</Text>
       </View>
@@ -69,7 +84,7 @@ const PaymentInfo = ({ navigation }) => {
           style={[styles.paymentMethodContainer, styles.addPaymentButton]}
           onPress={() => navigation.navigate('AddCreditCard')}
         >
-          <Ionicons name="add" size={28} color="#6B9AC4" style={styles.add}/>
+          <Ionicons name="add" size={28} color={COLORS.accent} style={styles.add}/>
           <Text style={styles.addPaymentText}>Agregar Metodo de Pago</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -85,7 +100,7 @@ const styles = StyleSheet.create({
     justifyContent: 'left',
   },
   addPaymentText: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 16,
     marginLeft: 15,
   },
@@ -99,7 +114,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   headerTitle: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 150,
@@ -112,13 +127,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   paymentExpiry: {
-    color: 'gray',
+    color: COLORS.textSecondary,
     fontSize: 14,
   },
   paymentMethodContainer: {
     alignItems: 'center',
-    backgroundColor: 'white',
-    borderColor: '#E5E5E5',
+    backgroundColor: COLORS.white,
+    borderColor: COLORS.border,
     borderRadius: 8,
     borderWidth: 1,
     flexDirection: 'row',
@@ -126,7 +141,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     minHeight: 70,
     padding: 15,
-    shadowColor: '#000',
+    shadowColor: COLORS.shadow,
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
@@ -140,22 +155,22 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   paymentText: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 16,
   },
   paymentType: {
-    color: '#1A73E8',
+    color: COLORS.type,
     fontSize: 16,
     fontWeight: 'bold',
     marginRight: 10,
   },
   safeArea: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     flex: 1,
   },
 
   selectedPaymentMethod: {
-    borderColor: '#6B9AC4',
+    borderColor: COLORS.accent,
   },
 });
 

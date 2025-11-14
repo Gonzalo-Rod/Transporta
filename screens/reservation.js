@@ -189,30 +189,40 @@ const Reservations = ({ navigation }) => {
   );
 };
 
+const COLORS = {
+  white: '#FFFFFF',
+  border: '#E0E0E0',
+  shadow: '#000000',
+  textPrimary: '#333333',
+  textSecondary: '#666666',
+  textMuted: '#888888',
+  accent: '#6B9AC4',
+};
+
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 20,
   },
   reservaButton: {
     alignItems: 'center',
-    backgroundColor: '#ffffff',
-    borderColor: '#E0E0E0',
+    backgroundColor: COLORS.white,
+    borderColor: COLORS.border,
     borderRadius: 12,
     borderWidth: 1,
     flexDirection: 'row',
     marginBottom: 20,
     marginHorizontal: 20,
     padding: 16,
-    shadowColor: '#000',
+    shadowColor: COLORS.shadow,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
   },
   reservaDescription: {
-    color: '#666',
+    color: COLORS.textSecondary,
     fontSize: 16,
   },
   reservaIcon: {
@@ -225,31 +235,31 @@ const styles = StyleSheet.create({
     marginVertical: 30,
   },
   reservaTitle: {
-    color: '#6B9AC4',
+    color: COLORS.accent,
     fontSize: 28,
     fontWeight: '500',
   },
   reservationDate: {
-    color: '#888',
+    color: COLORS.textMuted,
     fontSize: 14,
   },
   reservationItem: {
     alignItems: 'center',
-    backgroundColor: '#ffffff',
-    borderColor: '#E0E0E0',
+    backgroundColor: COLORS.white,
+    borderColor: COLORS.border,
     borderRadius: 8,
     borderWidth: 1,
     flexDirection: 'row',
     marginBottom: 10,
     marginHorizontal: 20,
     padding: 12,
-    shadowColor: '#000',
+    shadowColor: COLORS.shadow,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
   },
   reservationText: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 16,
   },
   reservationTextContainer: {
@@ -260,7 +270,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,

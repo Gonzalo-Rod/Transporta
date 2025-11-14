@@ -1,9 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, SafeAreaView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  SafeAreaView,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const { width } = Dimensions.get('window');
+const COLORS = {
+  white: '#FFFFFF',
+  border: '#E5E5E5',
+  textPrimary: '#333333',
+  textSecondary: '#555555',
+  accent: '#6B9AC4',
+  shadow: '#000000',
+};
 
 const DriverProfile = ({ navigation, route }) => {
   const { driver } = route.params;
@@ -14,11 +28,16 @@ const DriverProfile = ({ navigation, route }) => {
     setDriverData(driver);
   }, [driver]);
 
+  const formattedVehicle =
+    driver.vehicle && driver.vehicle.length > 0
+      ? `${driver.vehicle.charAt(0).toUpperCase()}${driver.vehicle.slice(1)}`
+      : '';
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.headerContainer}>
         <TouchableOpacity testID="driver-profile-back" onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#6B9AC4" />
+          <Ionicons name="arrow-back" size={24} color={COLORS.accent} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Conductor</Text>
       </View>
@@ -27,7 +46,7 @@ const DriverProfile = ({ navigation, route }) => {
         <View style={styles.profileDetails}>
           <Text style={styles.driverName}>{driver.name} {driver.lastname}</Text>
           <View style={styles.ratingContainer}>
-            <Ionicons name="star" size={16} color="white" />
+            <Ionicons name="star" size={16} color={COLORS.white} />
             <Text style={styles.ratingText}>{driver.rating.toFixed(2)}</Text>
           </View>
         </View>
@@ -40,7 +59,7 @@ const DriverProfile = ({ navigation, route }) => {
           style={styles.button}
           onPress={() => navigation.navigate('Chat', { driverName: driver.name })}
         >
-          <Ionicons name="chatbox" size={20} color="#6B9AC4" />
+          <Ionicons name="chatbox" size={20} color={COLORS.accent} />
           <Text style={styles.buttonText}>Contacto</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -48,7 +67,7 @@ const DriverProfile = ({ navigation, route }) => {
           style={styles.button}
           onPress={() => navigation.navigate('AdvReservation', { driverData: driverData ?? driver })}
         >
-          <Ionicons name="calendar" size={20} color="#6B9AC4" />
+          <Ionicons name="calendar" size={20} color={COLORS.accent} />
           <Text style={styles.buttonText}>Reservar</Text>
         </TouchableOpacity>
       </View>
@@ -61,11 +80,13 @@ const DriverProfile = ({ navigation, route }) => {
         </View>
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Vehiculo</Text>
-          <Text style={styles.infoValue}>{driver.vehicle.charAt(0).toUpperCase() + driver.vehicle.slice(1)}</Text>
+          <Text style={styles.infoValue}>{formattedVehicle}</Text>
         </View>
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Dimensiones</Text>
-          <Text style={styles.infoValue}>{driver.ancho} x {driver.largo} x {driver.altura}</Text>
+          <Text style={styles.infoValue}>
+            {driver.ancho} x {driver.largo} x {driver.altura}
+          </Text>
         </View>
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Disponibilidad</Text>
@@ -79,8 +100,8 @@ const DriverProfile = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
-    backgroundColor: 'white',
-    borderColor: '#E5E5E5',
+    backgroundColor: COLORS.white,
+    borderColor: COLORS.border,
     borderRadius: 8,
     borderWidth: 1,
     flexDirection: 'row',
@@ -90,7 +111,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   buttonText: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 18,
     marginLeft: 5,
   },
@@ -99,7 +120,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     paddingHorizontal: 20,
     paddingVertical: 20,
-    shadowColor: '#000',
+    shadowColor: COLORS.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.03,
     shadowRadius: 5,
@@ -111,7 +132,7 @@ const styles = StyleSheet.create({
     width: 90,
   },
   driverName: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 24,
     fontWeight: 'bold',
   },
@@ -120,36 +141,36 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     alignItems: 'center',
-    borderBottomColor: '#E5E5E5',
+    borderBottomColor: COLORS.border,
     flexDirection: 'row',
     paddingHorizontal: 16,
     paddingVertical: 10,
   },
   headerTitle: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 115,
   },
   infoLabel: {
-    color: '#555',
+    color: COLORS.textSecondary,
     fontSize: 16,
   },
   infoRow: {
-    borderBottomColor: '#6B9AC4',
+    borderBottomColor: COLORS.accent,
     borderBottomWidth: 0.5,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 16,
   },
   infoTitle: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 18,
     fontWeight: 'bold',
     marginVertical: 10,
   },
   infoValue: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 16,
   },
   profileContainer: {
@@ -165,7 +186,7 @@ const styles = StyleSheet.create({
   ratingContainer: {
     alignItems: 'center',
     alignSelf: 'flex-start',
-    backgroundColor: '#6B9AC4',
+    backgroundColor: COLORS.accent,
     borderRadius: 14,
     flexDirection: 'row',
     marginTop: 5,
@@ -173,12 +194,12 @@ const styles = StyleSheet.create({
     paddingVertical: 7,
   },
   ratingText: {
-    color: 'white',
+    color: COLORS.white,
     fontSize: 14,
     marginLeft: 5,
   },
   safeArea: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     flex: 1,
   },
 });

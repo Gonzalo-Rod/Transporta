@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  SafeAreaView,
+} from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
@@ -9,6 +16,16 @@ import 'moment/locale/es';
 const driversData = [
   { id: '1', name: 'Pedro Lopez Alvarez', plate: 'AEZ037', vehicle: 'HYUNDAI Negro', rating: 4.5, image: require('../../assets/ConductorTemp.png') },
 ];
+
+const COLORS = {
+  white: '#FFFFFF',
+  black: '#000000',
+  primary: '#6B9AC4',
+  cancel: '#D9534F',
+  textPrimary: '#333333',
+  textSecondary: '#666666',
+  highlight: '#4A90E2',
+};
 
 const DetailsCard = () => {
   const route = useRoute();
@@ -43,7 +60,12 @@ const DetailsCard = () => {
           <Text style={styles.driverDetails}>{driver.vehicle}</Text>
         </View>
         <View style={styles.ratingContainer}>
-          <Ionicons name="star" size={32} color="#6B9AC4" style={styles.ratingIcon} />
+          <Ionicons
+            name="star"
+            size={32}
+            color={COLORS.primary}
+            style={styles.ratingIcon}
+          />
           <Text style={styles.ratingText}>{driver.rating}</Text>
         </View>
       </TouchableOpacity>
@@ -90,41 +112,41 @@ const DetailsCard = () => {
 const styles = StyleSheet.create({
   cancelButton: {
     alignItems: 'center',
-    backgroundColor: '#D9534F',
+    backgroundColor: COLORS.cancel,
     borderRadius: 10,
     marginTop: 15,
     paddingVertical: 15,
   },
   cancelButtonText: {
-    color: '#FFFFFF',
+    color: COLORS.white,
     fontSize: 16,
     fontWeight: 'bold',
   },
   container: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.white,
     flex: 1,
     paddingHorizontal: 20,
   },
   dateText: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 14,
     marginTop: 5,
   },
   driverCard: {
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.white,
     borderRadius: 10,
     elevation: 3,
     flexDirection: 'row',
     marginBottom: 15,
     padding: 15,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 5,
   },
   driverDetails: {
-    color: '#666',
+    color: COLORS.textSecondary,
     fontSize: 14,
   },
   driverImage: {
@@ -137,12 +159,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   driverName: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 18,
     fontWeight: 'bold',
   },
   paymentAmount: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 16,
   },
   paymentContainer: {
@@ -151,7 +173,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   paymentDetails: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 16,
   },
   paymentDetailsContainer: {
@@ -172,11 +194,11 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   ratingText: {
-    color: '#4A90E2',
+    color: COLORS.highlight,
     fontSize: 16,
   },
   routeAddress: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 14,
   },
   routeContainer: {
@@ -185,17 +207,17 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   routePoint: {
-    color: '#666',
+    color: COLORS.textSecondary,
     fontSize: 14,
     marginRight: 10,
   },
   section: {
-    borderTopColor: '#6B9AC4',
+    borderTopColor: COLORS.primary,
     borderTopWidth: 1,
     paddingVertical: 10,
   },
   sectionTitle: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,

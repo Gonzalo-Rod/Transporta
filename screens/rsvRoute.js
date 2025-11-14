@@ -48,7 +48,7 @@ const ReservationRoute = () => {
       <View style={styles.container}>
 
         <TouchableOpacity testID="reservation-route-back" onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={26} color="#6B9AC4" />
+          <Ionicons name="arrow-back" size={26} color={COLORS.primary} />
         </TouchableOpacity>
 
         <Text style={styles.headerText}>Selecciona la Ruta</Text>
@@ -113,6 +113,15 @@ const ReservationRoute = () => {
   );
 };
 
+const COLORS = {
+  white: '#FFFFFF',
+  primary: '#6B9AC4',
+  textPrimary: '#000000',
+  textSecondary: '#777777',
+  inputBackground: '#F4F4F4',
+  shadow: '#000000',
+};
+
 const styles = StyleSheet.create({
   backButton: {
     left: 16,
@@ -120,20 +129,20 @@ const styles = StyleSheet.create({
     top: 20,
   },
   container: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     flex: 1,
     paddingHorizontal: 16,
   },
   continueButton: {
     alignItems: 'center',
-    backgroundColor: '#6B9AC4',
+    backgroundColor: COLORS.primary,
     borderRadius: 8,
     marginHorizontal: 20,
     marginTop: 20,
     paddingVertical: 15,
   },
   continueButtonText: {
-    color: 'white',
+    color: COLORS.white,
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -153,14 +162,14 @@ const styles = StyleSheet.create({
     width: 30,
   },
   input: {
-    color: '#333',
+    color: COLORS.textPrimary,
     flex: 1,
     fontSize: 16,
     marginLeft: 10,
   },
   inputRow: {
     alignItems: 'center',
-    backgroundColor: '#F4F4F4',
+    backgroundColor: COLORS.inputBackground,
     borderRadius: 8,
     flexDirection: 'row',
     marginBottom: 15,
@@ -169,33 +178,33 @@ const styles = StyleSheet.create({
   },
   routeContainer: {
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     borderRadius: 8,
     elevation: 2,
     flexDirection: 'row',
     marginBottom: 10,
     padding: 12,
-    shadowColor: '#000',
+    shadowColor: COLORS.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
   routeDate: {
-    color: '#777',
+    color: COLORS.textSecondary,
     fontSize: 12,
   },
   routeList: {
     marginVertical: 10,
   },
   routeText: {
-    color: '#000',
+    color: COLORS.textPrimary,
     fontSize: 14,
   },
   routeTextContainer: {
     flex: 1,
   },
   safeContainer: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     flex: 1,
   },
   smallInput: {

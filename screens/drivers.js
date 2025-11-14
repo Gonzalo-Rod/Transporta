@@ -1,9 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, FlatList, Image, TextInput, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Image,
+  TextInput,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const { width } = Dimensions.get('window');
+const COLORS = {
+  white: '#FFFFFF',
+  border: '#E5E5E5',
+  shadow: '#000000',
+  textPrimary: '#333333',
+  textSecondary: '#555555',
+  accent: '#6B9AC4',
+  inputBackground: '#F4F4F4',
+  placeholder: 'gray',
+};
 const defaultRating = 5;
 
 const DriversList = ({ navigation, route }) => {
@@ -14,22 +32,22 @@ const DriversList = ({ navigation, route }) => {
   const [filteredDrivers, setFilteredDrivers] = useState([]);
 
   const mapDrivers = (driversSource) =>
-    Array.isArray(driversSource)
-      ? driversSource.map((driver, index) => ({
-        id: driver?.placa?.S ?? `driver-${index}`,
-        name: driver?.nombre_conductor?.S ?? 'Nombre no disponible',
-        mail: driver?.correo_conductor?.S ?? 'Correo no disponible',
-        lastname: driver?.apellido_conductor?.S ?? '',
-        phone: driver?.telefono?.S ?? 'Teléfono no disponible',
-        vehicle: driver?.tipo_transporte?.S ?? 'Vehículo no disponible',
-        plate: driver?.placa?.S ?? '',
-        ancho: driver?.dimensiones?.M?.ancho?.S ?? 'N/A',
-        largo: driver?.dimensiones?.M?.largo?.S ?? 'N/A',
-        altura: driver?.dimensiones?.M?.altura?.S ?? 'N/A',
-        rating: defaultRating,
-        image: require('../assets/ConductorTemp.png'),
-      }))
-      : [];
+  Array.isArray(driversSource)
+    ? driversSource.map((driver, index) => ({
+      id: driver?.placa?.S ?? `driver-${index}`,
+      name: driver?.nombre_conductor?.S ?? 'Nombre no disponible',
+      mail: driver?.correo_conductor?.S ?? 'Correo no disponible',
+      lastname: driver?.apellido_conductor?.S ?? '',
+      phone: driver?.telefono?.S ?? 'Teléfono no disponible',
+      vehicle: driver?.tipo_transporte?.S ?? 'Vehículo no disponible',
+      plate: driver?.placa?.S ?? '',
+      ancho: driver?.dimensiones?.M?.ancho?.S ?? 'N/A',
+      largo: driver?.dimensiones?.M?.largo?.S ?? 'N/A',
+      altura: driver?.dimensiones?.M?.altura?.S ?? 'N/A',
+      rating: defaultRating,
+      image: require('../assets/ConductorTemp.png'),
+    }))
+    : [];
 
   useEffect(() => {
     setFilteredDrivers(mapDrivers(vehiculos));
@@ -58,9 +76,11 @@ const DriversList = ({ navigation, route }) => {
         <View style={styles.driverInfo}>
           <Text style={styles.driverName}>{item.name} {item.lastname}</Text>
           <Text style={styles.driverDetails}>Vehiculo: {item.vehicle}</Text>
-          <Text style={styles.driverDetails}>Dimensiones: {item.ancho} x {item.largo} x {item.altura}</Text>
+          <Text style={styles.driverDetails}>
+            Dimensiones: {item.ancho} x {item.largo} x {item.altura}
+          </Text>
           <View style={styles.driverRating}>
-            <Ionicons name="star" size={16} color="#6B9AC4" />
+            <Ionicons name="star" size={16} color={COLORS.accent} />
             <Text style={styles.ratingText}>{item.rating}</Text>
           </View>
         </View>
@@ -72,7 +92,7 @@ const DriversList = ({ navigation, route }) => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.headerContainer}>
         <TouchableOpacity testID="drivers-back" onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#6B9AC4" />
+          <Ionicons name="arrow-back" size={24} color={COLORS.accent} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Conductores</Text>
       </View>
@@ -98,22 +118,20 @@ const DriversList = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   driverCard: {
     alignSelf: 'center',
-    backgroundColor: 'white',
-    borderColor: '#E5E5E5',
+    backgroundColor: COLORS.white,
+    borderColor: COLORS.border,
     borderRadius: 10,
     borderWidth: 1,
-    elevation: 2,
     flexDirection: 'row',
     marginBottom: 16,
     padding: 10,
-    shadowColor: '#000',
+    shadowColor: COLORS.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
-    width: width - 40,
   },
   driverDetails: {
-    color: '#555',
+    color: COLORS.textSecondary,
     fontSize: 14,
   },
   driverImage: {
@@ -126,7 +144,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   driverName: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -137,13 +155,13 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     alignItems: 'center',
-    borderBottomColor: '#E5E5E5',
+    borderBottomColor: COLORS.border,
     flexDirection: 'row',
     paddingHorizontal: 16,
     paddingVertical: 10,
   },
   headerTitle: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 115,
@@ -153,17 +171,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   ratingText: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 14,
     marginLeft: 5,
   },
   safeArea: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     flex: 1,
   },
   searchContainer: {
     alignItems: 'center',
-    backgroundColor: '#F4F4F4',
+    backgroundColor: COLORS.inputBackground,
     borderRadius: 10,
     flexDirection: 'row',
     marginBottom: 16,
@@ -176,7 +194,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   searchInput: {
-    color: 'gray',
+    color: COLORS.placeholder,
     flex: 1,
     fontSize: 16,
     height: 40,

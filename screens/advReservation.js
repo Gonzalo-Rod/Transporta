@@ -1,16 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Dimensions, SafeAreaView } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  SafeAreaView,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SearchLocation from '../components/Inputs/searchLocation';
+import { getUser, getToken } from '../utils/Auth';
+import axios from 'axios';
 
-const { width } = Dimensions.get('window');
 const url = 'https://swgopvgvf5.execute-api.us-east-1.amazonaws.com/dev/reserva';
 const headers = {
   'Content-Type': 'application/json',
 };
-import { getUser, getToken } from '../utils/Auth';
-import axios from 'axios';
+
+const COLORS = {
+  primary: '#6B9AC4',
+  textPrimary: '#333333',
+  textSecondary: '#555555',
+  border: '#E5E5E5',
+  inputBackground: '#F4F4F4',
+  white: '#FFFFFF',
+};
 
 const AdvReservation = ({ navigation, route }) => {
   const { driverData } = route.params;
@@ -38,22 +53,22 @@ const AdvReservation = ({ navigation, route }) => {
   }, []);
 
   const obtenerDireccionesGoogleMaps = async () => {
-  	const baseURL = 'https://proyecto-is-google-api.vercel.app/google-maps/directions';
+    const baseURL = 'https://proyecto-is-google-api.vercel.app/google-maps/directions';
     try {
       const response = await axios.get(baseURL, {
-      	params: {
-        	origin: inicio,
+        params: {
+          origin: inicio,
           destination: llegada,
         },
       });
       const distancia = response.data.routes[0]?.legs[0]?.distance?.value || 0;
       const duracion = response.data.routes[0]?.legs[0]?.duration?.value || 0;
 
-      const tipo_transporte = 10;
-      const tipo_carga = 20;
+      const tipoTransporte = 10;
+      const tipoCarga = 20;
 
-      const dur = duracion/60;
-      const precioCalculado = (distancia/1000 * 2) + tipo_transporte + tipo_carga;
+      const dur = duracion / 60;
+      const precioCalculado = (distancia / 1000) * 2 + tipoTransporte + tipoCarga;
       console.log(precioCalculado);
       setPrecio(precioCalculado.toFixed(1));
       setDuracion(dur.toFixed(1));
@@ -64,13 +79,13 @@ const AdvReservation = ({ navigation, route }) => {
 
 
   useEffect(() => {
-  	if (inicio && llegada) {
+    if (inicio && llegada) {
       obtenerDireccionesGoogleMaps();
     }
   }, [inicio, llegada]);
 
 
-  const create_reservaHandler = async () => {
+  const createReservaHandler = async () => {
     try {
       const info = {
         correo_user: user,
@@ -100,7 +115,7 @@ const AdvReservation = ({ navigation, route }) => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.headerContainer}>
         <TouchableOpacity testID="adv-reservation-back" onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#6B9AC4" />
+          <Ionicons name="arrow-back" size={24} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Datos de reserva</Text>
       </View>
@@ -163,14 +178,14 @@ const AdvReservation = ({ navigation, route }) => {
       <TouchableOpacity
         style={styles.submitButton}
         onPress={async () => {
-          const reserva_valida = await create_reservaHandler();
-          if (reserva_valida) {
+          const reservaValida = await createReservaHandler();
+          if (reservaValida) {
             navigation.navigate('AdvConfirmation', {
-              	originAddress: inicio,
-              	destinationAddress: llegada,
-              	date: fecha,
-              	time: hora,
-            	});
+              originAddress: inicio,
+              destinationAddress: llegada,
+              date: fecha,
+              time: hora,
+            });
           }
         }}
       >
@@ -187,27 +202,27 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     alignItems: 'center',
-    borderBottomColor: '#E5E5E5',
+    borderBottomColor: COLORS.border,
     flexDirection: 'row',
     marginBottom: 20,
     paddingHorizontal: 16,
     paddingVertical: 10,
   },
   headerTitle: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 97,
   },
   input: {
-    color: '#333',
+    color: COLORS.textPrimary,
     flex: 1,
     fontSize: 16,
     marginLeft: 10,
   },
   inputRow: {
     alignItems: 'center',
-    backgroundColor: '#F4F4F4',
+    backgroundColor: COLORS.inputBackground,
     borderRadius: 8,
     flexDirection: 'row',
     marginBottom: 15,
@@ -216,7 +231,7 @@ const styles = StyleSheet.create({
   },
   notesContainer: {
     alignItems: 'flex-start',
-    backgroundColor: '#F4F4F4',
+    backgroundColor: COLORS.inputBackground,
     borderRadius: 8,
     flexDirection: 'row',
     marginBottom: 15,
@@ -233,12 +248,12 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   price: {
-    color: '#6B9AC4',
+    color: COLORS.primary,
     fontSize: 16,
     fontWeight: 'bold',
   },
   priceContainer: {
-    borderTopColor: '#6B9AC4',
+    borderTopColor: COLORS.primary,
     borderTopWidth: 0.5,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -247,7 +262,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   priceLabel: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 16,
   },
   row: {
@@ -255,7 +270,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   safeArea: {
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     flex: 1,
   },
   smallInput: {
@@ -263,14 +278,14 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   submitButton: {
-    backgroundColor: '#6B9AC4',
+    backgroundColor: COLORS.primary,
     borderRadius: 8,
     marginBottom: 30,
     marginHorizontal: 20,
     paddingVertical: 15,
   },
   submitButtonText: {
-    color: '#fff',
+    color: COLORS.white,
     fontSize: 18,
     textAlign: 'center',
   },

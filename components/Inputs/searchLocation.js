@@ -87,6 +87,15 @@ const SearchLocation = ({ placeholder, onLocationSelect }) => {
   );
 };
 
+const COLORS = {
+  textPrimary: '#333333',
+  inputBackground: '#F4F4F4',
+  border: '#E0E0E0',
+  textSecondary: '#A5A5A5',
+  white: '#FFFFFF',
+  black: '#000000',
+};
+
 const styles = StyleSheet.create({
   container: {
     marginBottom: 15,
@@ -96,50 +105,50 @@ const styles = StyleSheet.create({
     flexGrow: 0, // Evita que la lista ocupe más espacio del necesario
   },
   input: {
-    color: '#333',
+    color: COLORS.textPrimary,
     flex: 1,
     fontSize: 16,
     marginLeft: 10,
   },
   inputRow: {
     alignItems: 'center',
-    backgroundColor: '#F4F4F4',
+    backgroundColor: COLORS.inputBackground,
     borderRadius: 8,
     flexDirection: 'row',
     paddingHorizontal: 10,
     paddingVertical: 15,
   },
   suggestionItem: {
-    borderBottomColor: '#E0E0E0',
+    borderBottomColor: COLORS.border,
     borderBottomWidth: 1,
     paddingHorizontal: 10,
     paddingVertical: 10,
   },
   suggestionSubText: {
-    color: '#A5A5A5',
+    color: COLORS.textSecondary,
     fontSize: 14,
     marginTop: 3,
   },
   suggestionText: {
-    color: '#333',
+    color: COLORS.textPrimary,
     fontSize: 16,
     fontWeight: '500',
   },
   suggestionsContainer: {
-    position: 'absolute',
-    top: 60, // Ajusta según la altura de tu inputRow
-    left: 0,
-    right: 0,
-    backgroundColor: '#FFF',
+    backgroundColor: COLORS.white,
     borderRadius: 8,
-    zIndex: 10,
+    elevation: 10, // Para Android
+    left: 0,
     maxHeight: 200, // Altura máxima para la lista
     overflow: 'hidden',
-    shadowColor: '#000',
+    position: 'absolute',
+    right: 0,
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 6 }, // Desplaza la sombra hacia abajo
     shadowOpacity: 4, // Más sutil para el efecto de levitación
     shadowRadius: 10, // Sombra más difusa
-    elevation: 10, // Para Android
+    top: 60, // Ajusta según la altura de tu inputRow
+    zIndex: 10,
   },
 });
 
